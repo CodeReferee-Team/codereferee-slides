@@ -107,7 +107,7 @@ git push                      # 1분 뒤 발표 주소에 반영
 
 | 파일 | 내용 |
 | --- | --- |
-| `index.html` | 슬라이드 16장, 애니메이션, 발표자 기능 |
+| `index.html` | 슬라이드 15장, 애니메이션, 발표자 기능 |
 | `script.md` | 대본, 시간이 넘칠 때 줄이는 순서, 예상 질문 |
 | `assets/` | 폰트, 기술 로고, 데모 캡처 |
 | `tools/sync_script.py` | `script.md` 대본을 `index.html` 발표자 노트에 넣고 검사 |

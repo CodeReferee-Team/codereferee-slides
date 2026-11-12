@@ -54,7 +54,13 @@ def read_script():
     notes = []
     for i, h in enumerate(heads):
         end = heads[i + 1].start() if i + 1 < len(heads) else len(body)
-        notes.append({"no": int(h.group(1)), "title": h.group(2), "text": body[h.end():end].strip()})
+        title, text = h.group(2), body[h.end():end].strip()
+        tm = PLAN.search(title)  # "## 1. 표지 (0:00~0:10)"처럼 제목 줄에 적은 시간도 받는다
+        if tm:
+            title = (title[:tm.start()] + title[tm.end():]).strip()
+            if not PLAN.search(text):
+                text = tm.group(0) + " " + text
+        notes.append({"no": int(h.group(1)), "title": title, "text": text})
     return notes
 
 
