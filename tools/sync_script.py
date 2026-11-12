@@ -7,6 +7,10 @@ script.md에서 아래 두 표시 사이만 읽는다. 머리말과 부록(예�
     <!-- 대본 시작 -->
     <!-- 대본 끝 -->
 
+"예상 질문 시작"과 "예상 질문 끝" 사이의 질문과 답은 index.html의 #qa에 넣는다.
+발표자 창은 마지막 장에서 → 를 한 번 더 누르거나 [예상 질문] 버튼을 누르면 이 목록을 보여 준다.
+질문은 **굵게** 한 줄, 답은 그 아래 줄에 쓰고, 질문 사이는 빈 줄로 나눈다.
+
 함께 검사하는 것:
 - script.md의 대본 수와 슬라이드 수가 같은지
 - 각 대본의 [→] 개수가 그 슬라이드의 화면 단계(data-step) 수와 같은지
@@ -28,6 +32,9 @@ INDEX = ROOT / "index.html"
 SCRIPT = ROOT / "script.md"
 START = "<!-- 대본 시작 -->"
 END = "<!-- 대본 끝 -->"
+QA_START = "<!-- 예상 질문 시작 -->"
+QA_END = "<!-- 예상 질문 끝 -->"
+QA_ITEM = re.compile(r"^\*\*(.+?)\*\*\s*\n(.+?)(?=\n\s*\n|\Z)", re.S | re.M)
 
 SECTION = re.compile(r'<section class="slide[^"]*" id="([^"]+)" data-title="([^"]+)">.*?</section>', re.S)
 NOTES = re.compile(r'(<aside class="notes">)(.*?)(</aside>)', re.S)
@@ -49,6 +56,19 @@ def read_script():
         end = heads[i + 1].start() if i + 1 < len(heads) else len(body)
         notes.append({"no": int(h.group(1)), "title": h.group(2), "text": body[h.end():end].strip()})
     return notes
+
+
+def read_qa():
+    text = SCRIPT.read_text(encoding="utf-8")
+    if QA_START not in text or QA_END not in text:
+        return None
+    body = text.split(QA_START, 1)[1].split(QA_END, 1)[0].strip()
+    return [(q.strip(), " ".join(a.split())) for q, a in QA_ITEM.findall(body)]
+
+
+def render_qa(items):
+    esc = lambda t: html.escape(t, quote=False)
+    return "".join(f'<div class="qi"><b>Q. {esc(q)}</b><span>{esc(a)}</span></div>' for q, a in items)
 
 
 def main():
@@ -88,7 +108,17 @@ def main():
         pos = m.end()
     updated = "".join(out) + page[pos:]
 
+    qa = read_qa()
+    if qa is None:
+        warnings.append(f"script.md에 '{QA_START}'와 '{QA_END}' 표시가 없어 예상 질문을 넣지 않았다")
+    elif QA_START not in updated or QA_END not in updated:
+        warnings.append("index.html에 예상 질문 자리(#qa)가 없다")
+    else:
+        head, rest = updated.split(QA_START, 1)
+        updated = head + QA_START + render_qa(qa) + QA_END + rest.split(QA_END, 1)[1]
+
     slow, fast = (spoken / c for c in CHARS_PER_MIN)
+    print(f"예상 질문 {len(qa or [])}개")
     print(f"슬라이드 {len(slides)}장, 대본 {spoken:,}자, 읽기 {fast:.1f}~{slow:.1f}분 (분당 {CHARS_PER_MIN[1]}~{CHARS_PER_MIN[0]}자)")
     for w in warnings:
         print("확인 필요:", w)

@@ -371,6 +371,11 @@ body.presenter #pv{display:block}
 #pvNotes .now{color:#fff;font-weight:600}
 #pvNotes .todo{color:#94a3b8}
 #pvNotes .arw{color:#4f7cff;font-weight:800}
+#pvNotes .qah{display:block;color:#93c5fd;font-weight:800;font-size:24px;margin-bottom:8px}
+#pvNotes .qi{display:block;margin-bottom:22px}
+#pvNotes .qi b{display:block;color:#fff;font-weight:700}
+#pvNotes .qi span{display:block;color:#cbd5e1;font-size:26px}
+#pvBtns button.on{background:#1d5fd1;border-color:#1d5fd1}
 @media print{html,body{overflow:visible;background:#fff}#viewport{position:static;display:block}#stage{transform:none!important}}
 </style>
 </head>
@@ -841,7 +846,7 @@ body.presenter #pv{display:block}
 </div></div>
 <div id="notes"><div class="t" id="notesTitle"></div><div id="notesBody"></div></div>
 <div id="help">← → 이동, F 전체화면, P 발표자 창, N 노트</div>
-<div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
+<div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button><button id="pvQa">예상 질문</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
 
 <script>
 (function(){
@@ -888,7 +893,19 @@ body.presenter #pv{display:block}
   // ---- presenter view ----
   let t0=Date.now();
   const fmt=sec=>String(Math.floor(sec/60)).padStart(2,'0')+':'+String(Math.floor(sec%60)).padStart(2,'0');
+  let qa=false;
+  function showQa(){
+    const box=document.getElementById('pvNotes');box.innerHTML='';
+    const h=document.createElement('span');h.className='qah';h.textContent='예상 질문';box.appendChild(h);
+    document.querySelectorAll('#qa .qi').forEach(q=>box.appendChild(q.cloneNode(true)));
+    if(!document.querySelector('#qa .qi')){const e=document.createElement('span');e.textContent='script.md에 예상 질문이 없다';box.appendChild(e);}
+    box.scrollTop=0;
+    document.getElementById('pvMeta').innerHTML='<b>'+(cur+1)+' / '+slides.length+'  '+(slides[cur].dataset.title||'')+'</b><br>예상 질문 보는 중 (빔 화면은 그대로)';
+    document.getElementById('pvNext').innerHTML='다음<b>'+(cur===slides.length-1?'← 누르면 마무리 대본':'버튼을 다시 누르면 대본')+'</b>';
+  }
   function presenter(){
+    document.getElementById('pvQa').classList.toggle('on',qa);
+    if(qa){showQa();return;}
     const s=slides[cur],raw=(s.querySelector('aside.notes')||{}).textContent||'';
     const plan=raw.match(/\((\d+:\d\d)~(\d+:\d\d)\)/);
     const parts=raw.replace(/\(\d+:\d\d~\d+:\d\d\)\s*/,'').split('[→]');
@@ -897,7 +914,7 @@ body.presenter #pv{display:block}
       const e=document.createElement('span');e.className=i<step?'done':i===step?'now':'todo';e.textContent=t;box.appendChild(e);});
     const cur_=box.querySelector('.now');cur_&&cur_.scrollIntoView({block:'nearest'});
     document.getElementById('pvMeta').innerHTML='<b>'+(cur+1)+' / '+slides.length+'  '+(s.dataset.title||'')+'</b><br>단계 '+step+' / '+maxStep(s)+(plan?'<br>계획 '+plan[1]+' ~ '+plan[2]:'');
-    const nx=step<maxStep(s)?'같은 장 다음 단계':(slides[cur+1]?(cur+2)+'. '+slides[cur+1].dataset.title:'마지막 장');
+    const nx=step<maxStep(s)?'같은 장 다음 단계':(slides[cur+1]?(cur+2)+'. '+slides[cur+1].dataset.title:'→ 누르면 예상 질문');
     document.getElementById('pvNext').innerHTML='다음<b>'+nx+'</b>';
     window.__plan=plan?plan[2]:null;
   }
@@ -907,14 +924,15 @@ body.presenter #pv{display:block}
     document.getElementById('pvReset').onclick=()=>{t0=Date.now();};
     document.getElementById('pvPrev').onclick=()=>prev();
     document.getElementById('pvNextBtn').onclick=()=>next();
+    document.getElementById('pvQa').onclick=()=>{qa=!qa;presenter();};
   }
   if(bc)bc.onmessage=e=>{const d=e.data;if(d.req){if(!PRESENTER)bc.postMessage({cur,step});return;}
     if(d.cur===cur&&d.step===step)return;remote=true;go(d.cur,d.step);remote=false;};
-  function go(i,st){const prev=cur;cur=Math.max(0,Math.min(slides.length-1,i));step=st===undefined?0:st;
+  function go(i,st){qa=false;const prev=cur;cur=Math.max(0,Math.min(slides.length-1,i));step=st===undefined?0:st;
     if(prev!==cur){enter[slides[cur].id]&&enter[slides[cur].id]();}
     apply();}
-  function next(){const m=maxStep(slides[cur]);if(step<m){step++;apply();}else if(cur<slides.length-1)go(cur+1);}
-  function prev(){if(step>0){step--;apply();}else if(cur>0){go(cur-1,maxStep(slides[cur-1]));}}
+  function next(){const m=maxStep(slides[cur]);if(PRESENTER&&cur===slides.length-1&&step>=m){if(!qa){qa=true;presenter();}return;}qa=false;if(step<m){step++;apply();}else if(cur<slides.length-1)go(cur+1);}
+  function prev(){if(PRESENTER&&qa){qa=false;presenter();return;}if(step>0){step--;apply();}else if(cur>0){go(cur-1,maxStep(slides[cur-1]));}}
 
   addEventListener('keydown',e=>{
     if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}
@@ -961,5 +979,6 @@ body.presenter #pv{display:block}
   if(PRESENTER&&bc)bc.postMessage({req:1});
 })();
 </script>
+<div id="qa" hidden><!-- 예상 질문 시작 --><div class="qi"><b>Q. AI가 판정하지 않으면 AI는 왜 쓰나요?</b><span>원인 설명과 수정안 작성에 씁니다. 판정은 같은 입력에 같은 답이 나와야 하는데 AI는 그렇지 않고, 레포에 문장을 심으면 조종당합니다. 같은 34건에서 규칙 100%, LLM 94%였고 심은 문장에 LLM이 2건 속았습니다.</span></div><div class="qi"><b>Q. 직접 돌려 보면 되지 않나요?</b><span>쿠버네티스 클러스터를 세우고, 카오스 도구를 설치하고, 부하 생성기를 붙이고, 측정값을 모아 기준과 비교해야 합니다. 저희는 그 과정을 주소 하나로 줄였습니다.</span></div><div class="qi"><b>Q. 부하를 걸면서 동시에 장애도 넣나요?</b><span>지금은 부하 측정과 장애 실험을 차례로 실행하고 각각 결과를 봅니다. 평소 트래픽을 건 채 장애를 넣는 실험은 검토 중입니다.</span></div><div class="qi"><b>Q. 큰 프로젝트는 얼마나 걸리나요?</b><span>의존성 다운로드와 빌드에 따라 다릅니다. 단계별 시간 제한을 두고, 준비 단계가 시간 초과되면 정리한 뒤 제한을 늘려 다시 시도합니다. 전체 예산을 다 쓰면 어디서 멈췄는지 남기고 끝냅니다. 시간 초과만으로 앱이 불안정하다고 판정하지 않습니다.</span></div><div class="qi"><b>Q. 여러 레포로 된 서비스도 되나요?</b><span>설정 파일로 여러 레포와 서비스 관계를 지정하면 한 환경에 함께 배포합니다. 앱 2·3·5개 구성에서 확인했습니다. 실패했을 때 레포별로 나눠 수정하는 기능은 만드는 중입니다.</span></div><div class="qi"><b>Q. 장애를 넣으면 실제 서비스에 영향이 없나요?</b><span>사용자 레포를 복제해 샌드박스 서버에서만 실험하고, 사용자 레포에는 아무것도 push하지 않습니다. 장애는 샌드박스 서버 안에서만 일어납니다.</span></div><!-- 예상 질문 끝 --></div>
 </body>
 </html>
