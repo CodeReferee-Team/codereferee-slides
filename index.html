@@ -80,8 +80,8 @@ h1.t em{font-style:normal;color:var(--blue)}
 .mot .card{height:520px;position:relative;overflow:hidden}
 .mot h3{font-size:30px;font-weight:800;margin-bottom:10px}
 .mot p{font-size:23px;color:var(--ink2);line-height:1.5}
-.tools{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
-.tools span{font-size:22px;padding:12px 20px;border-radius:14px;background:var(--blue-soft);color:var(--blue);font-weight:700;opacity:0;transform:translateY(10px)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.tools span{font-size:21px;padding:12px 16px;white-space:nowrap;border-radius:14px;background:var(--blue-soft);color:var(--blue);font-weight:700;opacity:0;transform:translateY(10px)}
 .slide.active .tools span{animation:rise .5s ease forwards}
 .ship{margin-top:40px;display:flex;align-items:center;gap:18px;font-size:26px;font-weight:700}
 .ship .bar{flex:1;height:18px;border-radius:9px;background:var(--line);overflow:hidden}
@@ -110,12 +110,16 @@ h1.t em{font-style:normal;color:var(--blue)}
 @keyframes march{to{background-position:24px 0}}
 .resultchips{display:flex;flex-direction:column;gap:12px}
 .resultchips .pill{font-size:24px;padding:10px 24px}
-.svc{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:32px;margin-top:56px}
+.svc{display:grid;grid-template-columns:1.3fr .9fr 1.25fr;gap:32px;margin-top:56px}
 .svc h4{font-size:26px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .svc ul{list-style:none;font-size:23px;line-height:1.5;color:var(--ink2)}
 .svc li{padding:8px 0;border-bottom:1px dashed var(--line)}
 .svc li:last-child{border:0}
-.svc .no li{text-decoration:line-through;text-decoration-color:#94a3b8aa}
+.svh{font-size:20px!important;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700!important}
+.sc li{display:flex;gap:16px;align-items:baseline}
+.sc li b{flex:none;width:170px;color:var(--ink);font-weight:700;font-size:22px}
+.oos{font-size:28px;font-weight:700;line-height:1.45;color:var(--ink);margin-top:6px}
+.oos2{font-size:21px;line-height:1.55;color:var(--ink2);margin-top:22px}
 .diff{display:flex;flex-direction:column;gap:16px}
 .diff div{display:flex;gap:18px;align-items:flex-start;font-size:23px;line-height:1.45}
 .diff b{flex:none;width:44px;height:44px;border-radius:12px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px}
@@ -130,7 +134,8 @@ h1.t em{font-style:normal;color:var(--blue)}
 .fstep p{font-size:23px;color:var(--ink2);line-height:1.45}
 .fstep::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--blue);transition:width .8s .2s ease}
 .fstep.on::after{width:100%}
-.loop-svg{position:absolute;right:-70px;top:60px;width:70px;height:350px;overflow:visible}
+.loop2{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;transform:none!important}
+.loop2 path{animation:dash 1s linear infinite}
 .loop-svg path{stroke-dasharray:8 8;stroke-dashoffset:400;transition:stroke-dashoffset 1.2s ease}
 .loop-svg.on path{stroke-dashoffset:0;animation:dash 1s linear 1.2s infinite}
 @keyframes dash{to{stroke-dashoffset:-16}}
@@ -154,14 +159,16 @@ h1.t em{font-style:normal;color:var(--blue)}
 /* ===== S6 pipeline ===== */
 .pipe{position:absolute;left:100px;right:100px;top:270px;height:600px}
 .pipe svg{width:100%;height:100%;overflow:visible}
-.pnode{opacity:.12;transition:opacity .5s}
-.pnode.on{opacity:1}
+.pnode{opacity:0}
+.slide.active .pnode{animation:pnIn .6s ease forwards;animation-delay:calc(var(--i) * .4s + .2s)}
+@keyframes pnIn{to{opacity:1}}
+#pipesvg>g[stroke] path{stroke-dasharray:10 8;animation:dash2 .9s linear infinite}
 .pnode text{font-family:inherit}
 .ptoken{fill:#fff;stroke:var(--blue);stroke-width:5;transition:transform .9s cubic-bezier(.5,0,.3,1)}
 
 /* ===== S7 verdict ===== */
 .verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:50px}
-.vcard{border-radius:24px;padding:34px 36px;background:#fff;border:2px solid var(--line);min-height:330px}
+.vcard{border-radius:24px;padding:34px 36px;background:#fff;border:2px solid var(--line);min-height:250px}
 .vcard .badge{font-size:40px;font-weight:900;letter-spacing:.02em}
 .vcard .ko{font-size:24px;font-weight:700;color:var(--ink2);margin-left:10px}
 .vcard p{font-size:23px;line-height:1.5;color:var(--ink2);margin-top:20px}
@@ -169,6 +176,7 @@ h1.t em{font-style:normal;color:var(--blue)}
 .vcard.pass{border-color:#86efac}.vcard.pass .badge{color:var(--pass)}
 .vcard.fail{border-color:#fca5a5}.vcard.fail .badge{color:var(--fail)}
 .vcard.na{border-color:#cbd5e1}.vcard.na .badge{color:var(--na)}
+.vl{margin-top:22px;padding:0;list-style:none}.vl li{font-size:23px;line-height:1.45;color:var(--ink2);padding:10px 0 10px 22px;position:relative;border-top:1px solid var(--line)}.vl li:first-child{border-top:0}.vl li:before{content:"";position:absolute;left:0;top:22px;width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.5}
 .budget{margin-top:40px;display:grid;grid-template-columns:1.25fr 1fr;gap:32px}
 .btrack{position:relative;height:58px;background:var(--pass-soft);border-radius:14px;margin:26px 0 14px;overflow:hidden}
 .btrack i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--pass);border-radius:14px 0 0 14px;transition:width 1.4s ease}
@@ -300,13 +308,42 @@ h1.t em{font-style:normal;color:var(--blue)}
 #dcap{font-size:26px;color:var(--ink3);font-family:var(--mono)}
 #dcap b{color:var(--ink);font-size:34px}
 #dcap span{font-family:inherit;font-family:'Pretendard Variable',sans-serif;color:var(--ink);font-weight:700;margin-left:14px}
-.browser{margin-top:34px;height:740px;border-radius:14px;background:#fff;border:1px solid #d6dbe3;box-shadow:0 18px 48px #0f172a1f;overflow:hidden;display:flex;flex-direction:column}
+.browser{margin:30px auto 0;width:1234px;height:740px;border-radius:14px;background:#fff;border:1px solid #d6dbe3;box-shadow:0 18px 48px #0f172a1f;overflow:hidden;display:flex;flex-direction:column}
 .bbar{height:46px;flex:none;background:#eef1f5;border-bottom:1px solid #d6dbe3;display:flex;align-items:center;gap:9px;padding:0 18px}
 .bbar>i{width:13px;height:13px;border-radius:50%;background:#cbd2dc}
 .bbar .tab{margin-left:18px;height:34px;align-self:flex-end;background:#fff;border:1px solid #d6dbe3;border-bottom:0;border-radius:9px 9px 0 0;padding:0 22px;display:flex;align-items:center;font-size:16px;color:var(--ink2)}
 .browser .shots{flex:1;position:relative}
-.browser .shots figure{align-items:flex-start;padding:26px 40px 0}
-.browser .shots img{box-shadow:none;border:0;border-radius:0;max-height:100%}
+.browser .shots figure{padding:0}
+.browser .shots img{box-shadow:none;border:0;border-radius:0;width:100%;height:100%;object-fit:cover}
+.stk{margin-top:44px}
+.srow{display:grid;grid-template-columns:300px repeat(4,1fr);align-items:center;padding:16px 0;border-bottom:2px solid var(--line)}
+.srow:last-child{border:0}
+.sname{font-size:38px;font-weight:800;line-height:1.1}
+.sname small{display:block;font-size:22px;font-weight:500;color:var(--ink3)}
+.ic{display:flex;align-items:center;gap:22px;opacity:0}
+.slide.active .ic{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * .07s + .3s)}
+.ic img{width:84px;height:84px;object-fit:contain}
+.ic span{font-size:26px;font-weight:700}
+
+/* ===== S12b expansion ===== */
+.exp{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px}
+.exp .card{padding:30px 34px}
+.exp h4{font-size:28px;font-weight:800;margin:10px 0 12px}
+.exp p{font-size:21px;color:var(--ink2);line-height:1.5}
+.exp .tag{font-family:var(--mono);font-size:18px;color:var(--blue);font-weight:600}
+.exp .chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.exp .chips i{font-style:normal;font-size:18px;font-weight:700;padding:6px 12px;border-radius:10px;background:var(--sand-soft);color:#7e22ce}
+.e2e{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:28px}
+.e2e table{width:100%;border-collapse:collapse;font-size:19px}
+.e2e td{padding:7px 4px;border-bottom:1px dashed var(--line);color:var(--ink2)}
+.e2e td:last-child{text-align:right;white-space:nowrap}
+.lbars{display:flex;align-items:flex-end;gap:22px;height:190px;margin-top:14px;padding:0 6px;border-bottom:2px solid var(--line)}
+.lbars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.lbars i{display:block;width:100%;height:0;border-radius:8px 8px 0 0;transition:height 1s cubic-bezier(.2,.7,.2,1)}
+.lbars em{font-style:normal;font-family:var(--mono);font-size:18px;font-weight:600;margin-bottom:6px}
+.lbx{display:flex;gap:22px;padding:8px 6px 0;font-size:18px;color:var(--ink3)}
+.lbx span{flex:1;text-align:center}
+
 /* notes */
 #notes{position:fixed;left:0;right:0;bottom:0;max-height:34vh;overflow:auto;background:#0f172aee;color:#e2e8f0;font-size:17px;line-height:1.6;padding:16px 28px;display:none;z-index:20;border-top:2px solid var(--blue)}
 #notes.show{display:block}
@@ -315,6 +352,26 @@ h1.t em{font-style:normal;color:var(--blue)}
 aside.notes{display:none}
 #help{position:fixed;right:14px;top:12px;color:#64748b;font-size:12px;z-index:20;opacity:.0;transition:opacity .3s}
 body:hover #help{opacity:.8}
+/* presenter view (?presenter): 내 화면 전용 */
+body.presenter{background:#0b1020;color:#e2e8f0}
+body.presenter #viewport{inset:auto;left:20px;top:20px;width:calc(62vw - 30px);height:calc((62vw - 30px)*9/16);border-radius:10px;overflow:hidden;outline:2px solid #1d5fd1}
+body.presenter #notes,body.presenter #help{display:none!important}
+#pv{display:none}
+body.presenter #pv{display:block}
+#pvSide{position:fixed;top:20px;right:20px;left:62vw;height:calc((62vw - 30px)*9/16);display:flex;flex-direction:column;gap:14px;font-family:'Pretendard Variable',sans-serif}
+#pvTimer{font-family:var(--mono);font-size:64px;font-weight:600;color:#fff;line-height:1}
+#pvTimer.over{color:#f87171}
+#pvMeta{font-size:18px;color:#94a3b8;line-height:1.6}
+#pvMeta b{color:#e2e8f0}
+#pvNext{margin-top:auto;padding:14px 16px;border:1px solid #1e293b;border-radius:10px;background:#111830;font-size:18px;color:#94a3b8}
+#pvNext b{display:block;color:#e2e8f0;font-size:22px;margin-top:4px}
+#pvBtns{display:flex;gap:8px}
+#pvBtns button{flex:1;padding:10px 0;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:16px;cursor:pointer;font-family:inherit}
+#pvNotes{position:fixed;left:20px;right:20px;top:calc((62vw - 30px)*9/16 + 36px);bottom:16px;overflow:auto;font-family:'Pretendard Variable',sans-serif;font-size:30px;line-height:1.6;white-space:pre-line;color:#64748b;padding-right:8px}
+#pvNotes .done{color:#475569}
+#pvNotes .now{color:#fff;font-weight:600}
+#pvNotes .todo{color:#94a3b8}
+#pvNotes .arw{color:#4f7cff;font-weight:800}
 @media print{html,body{overflow:visible;background:#fff}#viewport{position:static;display:block}#stage{transform:none!important}}
 </style>
 </head>
@@ -340,7 +397,7 @@ body:hover #help{opacity:.8}
     <div class="q rise d2">카오스 엔지니어링 기반<br>GitHub 저장소 안정성 자동 검증 에이전트</div>
   </div>
   <div class="meta rise d4"><span><b>C211205</b> 정승윤</span><span><b>C311211</b> 유도훈</span><span><b>C135109</b> 김태우</span></div>
-  <aside class="notes">(0:00~0:10) 안녕하세요, 카오스 엔지니어링 기반 GitHub 저장소 안정성 자동 검증 에이전트, CodeReferee를 발표할 정승윤, 유도훈, 김태우입니다.</aside>
+  <aside class="notes">(0:00~0:10) 안녕하세요. GitHub 프로젝트의 안정성을 검증하는 CodeReferee 팀 정승윤, 유도훈, 김태우입니다.</aside>
 </section>
 
 <!-- ============ 2. MOTIVATION ============ -->
@@ -369,9 +426,9 @@ body:hover #help{opacity:.8}
     </div>
   </div>
   <div class="punch" data-step="2">테스트 통과와 운영에서 버티는 것 사이의 간극을 <em>실제로 재 주는</em> 서비스</div>
-  <aside class="notes">(0:10~1:10) 요즘은 웹이나 앱을 정말 쉽게 만듭니다. AI 코딩 도구로 코드를 쓰고, 템플릿으로 뼈대를 잡고, 버튼 하나로 배포합니다. 테스트까지 통과하면 다 된 것 같지만, 그건 "돌아간다"까지입니다.
-[→] 실제 운영에서는 사용자가 몰리고, 서버 하나가 죽고, DB가 잠깐 끊깁니다. 오른쪽처럼 동시 사용자가 10명에서 200명으로 늘면 응답이 느려지다가 요청이 끊기기 시작하는데, 이건 직접 걸어 보기 전에는 아무도 모릅니다.
-[→] 그래서 테스트 통과와 운영에서 버티는 것 사이의 간극을 실제로 재 주는 서비스를 만들었습니다.</aside>
+  <aside class="notes">(0:10~1:00) 요즘은 AI 도구와 템플릿 덕분에 웹 서비스를 하루 만에 만들고 배포합니다. 하지만 테스트 통과는 "돌아간다"까지입니다.
+[→] 사용자가 몰리거나 서버 하나가 죽으면 어떻게 될지는 직접 걸어 보기 전에는 모릅니다. k6 같은 부하 도구나 카오스 도구가 있지만, 실험을 설계하고 코드와 환경을 직접 준비해야 합니다.
+[→] 그래서 GitHub 주소 하나로 이 실험을 대신해 주는 서비스를 만들었습니다.</aside>
 </section>
 
 <!-- ============ 3. SERVICE ============ -->
@@ -389,23 +446,19 @@ body:hover #help{opacity:.8}
   </div>
   <div class="svc">
     <div class="card" data-step="1">
-      <h4><span class="pill p-pass">검사한다</span></h4>
-      <ul>
-        <li>Pod 삭제, 컨테이너 종료 후 복구</li>
-        <li>실제 OOM (메모리 한도 초과)</li>
-        <li>DB, Redis 연결 차단</li>
-        <li>네트워크 지연, 패킷 손실</li>
-        <li>동시 사용자 10 → 200명 부하</li>
+      <h4 class="svh">Chaos Scenarios</h4>
+      <ul class="sc">
+        <li><b>Pod Kill</b>컨테이너가 죽으면 다시 뜨는가</li>
+        <li><b>OOM</b>메모리 한도를 넘기면</li>
+        <li><b>DB, Redis Down</b>의존 서비스가 끊기면</li>
+        <li><b>Network</b>지연 300ms, 패킷 손실 50%</li>
+        <li><b>Load</b>동시 사용자 10, 50, 100, 200명</li>
       </ul>
     </div>
     <div class="card" data-step="2">
-      <h4><span class="pill p-na">검사하지 않는다</span></h4>
-      <ul class="no">
-        <li>코드 버그, 로직 결함</li>
-        <li>코드 스타일, 정적 분석</li>
-        <li>테스트 실패 자체</li>
-      </ul>
-      <p style="font-size:21px;color:var(--ink2);margin-top:18px;line-height:1.5">설치, 테스트, 기동은 장애를 걸기 위한 <b style="color:var(--ink)">준비 단계</b>일 뿐이다.</p>
+      <h4 class="svh">Out of Scope</h4>
+      <p class="oos">코드 버그, 스타일, 테스트 실패는 판정하지 않는다.</p>
+      <p class="oos2">설치, 테스트, 기동은 장애를 걸기 위한 준비 단계다. 여기서 막히면 결과는 <b>판정 불가</b>.</p>
     </div>
     <div class="card diff" data-step="3">
       <div><b>1</b><p><strong>실제로 띄우고 장애를 건다</strong><span>쿠버네티스 샌드박스에 배포하고 LitmusChaos로 주입</span></p></div>
@@ -413,10 +466,10 @@ body:hover #help{opacity:.8}
       <div><b>3</b><p><strong>고칠 방법까지 검증한다</strong><span>실패하면 패치를 만들어 같은 장애로 다시 돌려 본다</span></p></div>
     </div>
   </div>
-  <aside class="notes">(1:10~2:10) 사용법은 간단합니다. GitHub 주소 하나를 넣으면 결과는 통과, 실패, 판정 불가 셋 중 하나로 나옵니다.
-[→] 저희가 검사하는 건 안정성입니다. Pod를 죽였을 때 다시 살아나는지, 메모리가 넘쳐 OOM이 났을 때, DB나 Redis가 끊겼을 때, 네트워크가 느려질 때, 그리고 동시 사용자가 200명까지 늘 때 버티는지를 봅니다.
-[→] 코드 버그나 스타일은 보지 않습니다. 설치하고 테스트하고 띄우는 건 장애를 걸기 위한 준비 단계일 뿐이고, 여기서 실패하면 판정 불가로 냅니다.
-[→] 차별점은 세 가지입니다. 정적 분석이 아니라 실제로 쿠버네티스에 띄우고 장애를 겁니다. 판정은 LLM이 아니라 규칙이 합니다. 그리고 실패하면 패치를 만들어서, 그 패치로 정말 버티는지까지 다시 돌려 보고 줍니다.</aside>
+  <aside class="notes">(1:00~1:45) 주소를 넣으면 결과는 통과, 실패, 판정 불가 중 하나로 나옵니다.
+[→] 서버 강제 종료, 메모리 초과, DB 끊김, 네트워크 지연, 그리고 동시 사용자 200명까지의 부하, 다섯 가지를 실제로 겁니다.
+[→] 코드 버그는 보지 않습니다. 그건 CI가 하는 일이고, 빌드가 안 되면 실패가 아니라 판정 불가입니다.
+[→] 차별점은 실제로 띄워 장애를 건다는 것, 판정은 AI가 아니라 규칙이 한다는 것, 그리고 고칠 방법까지 다시 돌려 확인한다는 것입니다.</aside>
 </section>
 
 <!-- ============ 4. USER FLOW ============ -->
@@ -427,19 +480,16 @@ body:hover #help{opacity:.8}
     <div class="fstep" data-step="1"><div class="n" style="color:#b7cdf5">01</div><div><h4>레포 주소 입력</h4><p>GitHub URL, 브랜치</p></div></div>
     <div class="fstep" data-step="2"><div class="n" style="color:#93b4ee">02</div><div><h4>검사 조건 선택</h4><p>검사 종류, 예상 동시 사용자 수</p></div></div>
     <div class="fstep" data-step="3"><div class="n" style="color:#6e98e4">03</div><div><h4>검사 시작</h4><p>리포트 받을 메일 (선택)</p></div>
-      <svg class="loop-svg" data-step="6" viewBox="0 0 70 350"><path d="M0 30 H50 V340 H0" fill="none" stroke="#1d5fd1" stroke-width="3"/><path d="M14 22 L0 30 L14 38" fill="none" stroke="#1d5fd1" stroke-width="3" style="stroke-dasharray:none"/></svg>
     </div>
     <div class="fstep" data-step="4"><div class="n" style="color:#4a7fd9">04</div><div><h4>진행 상황 확인</h4><p>점검, 배포, 장애와 부하 실험, 판정</p></div></div>
     <div class="fstep" data-step="5"><div class="n" style="color:#2b68cf">05</div><div><h4>결과 확인</h4><p>통과, 실패, 판정 불가와 그 근거</p></div></div>
     <div class="fstep" data-step="6"><div class="n" style="color:#1d5fd1">06</div><div><h4>수정안 받기</h4><p>실패하면 패치 후 재검증 (최대 3회)</p></div></div>
-    <div class="looplabel" data-step="6">패치 적용 후 다시 검사</div>
+    <svg class="loop2" id="loop2" data-step="6"><defs><marker id="la" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1d5fd1"/></marker></defs><path id="loopPath" fill="none" stroke="#1d5fd1" stroke-width="3" stroke-dasharray="9 8" marker-end="url(#la)"/><rect id="loopBg" width="150" height="70" rx="14" fill="#f6f7f9"/><text id="loopText" font-size="20" font-weight="700" fill="#1d5fd1" text-anchor="middle"><tspan id="lt1">패치 적용 후</tspan><tspan id="lt2">다시 검사</tspan></text></svg>
   </div>
   <div class="card" data-step="6" style="margin-top:110px;display:flex;gap:30px;align-items:center;padding:24px 36px">
     <span class="pill p-blue">PDF 리포트</span><span style="font-size:23px;color:var(--ink2)">끝나면 판정, 근거, 자원 사용 추이, 검증된 패치를 PDF로 메일 발송. 사용자 레포에는 아무것도 push하지 않는다.</span>
   </div>
-  <aside class="notes">(2:10~3:10) 사용자 입장에서는 여섯 단계입니다. [→] 레포 주소와 브랜치를 넣고, [→] 검사 종류와 예상 동시 사용자 수를 고릅니다. 예상 인원을 적으면 그 인원에서 요청이 실패할 때 실패로 판정합니다.
-[→] 검사를 시작하면 [→] 사전 점검, 배포, 장애와 부하 실험, 판정이 진행되는 걸 실시간으로 볼 수 있습니다. [→] 끝나면 결과와 그 근거가 나옵니다.
-[→] 실패했다면 수정안을 받습니다. 패치를 적용해 같은 조건으로 다시 검사하고, 최대 3번까지 반복합니다. 리포트는 PDF로 메일이 가고, 사용자 레포에는 아무것도 push하지 않습니다.</aside>
+  <aside class="notes">(1:45~2:20) 사용 방법입니다. [→] 주소와 브랜치를 넣고, [→] 검사 종류와 예상 사용자 수를 고른 뒤 [→] 시작합니다. [→] 진행 단계는 실시간으로 보이고, [→] 끝나면 결과와 근거가 나옵니다. [→] 실패하면 수정안을 적용해 최대 세 번 다시 검사하고, 리포트는 PDF로 메일이 갑니다.</aside>
 </section>
 
 <!-- ============ 5. ARCHITECTURE ============ -->
@@ -452,7 +502,7 @@ body:hover #help{opacity:.8}
       <g class="ec2"><rect x="250" y="60" width="370" height="470" rx="26"/><rect x="690" y="60" width="440" height="470" rx="26"/><rect x="1200" y="60" width="480" height="470" rx="26"/></g>
       <text x="270" y="44" font-size="22" fill="#64748b" font-weight="700">EC2 ① BE, 상시</text>
       <text x="710" y="44" font-size="22" fill="#64748b" font-weight="700">EC2 ② AI, 상시</text>
-      <text x="1220" y="44" font-size="22" fill="#64748b" font-weight="700">EC2 ③ Sandbox, 요청 시만</text>
+      <text x="1220" y="44" font-size="22" fill="#64748b" font-weight="700">EC2 ③ Sandbox, 장애 격리</text>
       <!-- wires -->
       <path id="w1" class="wire hot" d="M200 220 H290"/>
       <path id="w2" class="wire hot" d="M580 220 H730"/>
@@ -492,13 +542,25 @@ body:hover #help{opacity:.8}
       <text x="1440" y="580" text-anchor="middle" font-size="20" fill="#475569">장애가 퍼져도 여기서 끝난다</text>
     </svg>
   </div>
-  <div class="stack rise d4">
-    <span>Stack</span>
-    <img src="assets/Vercel.png" alt="Vercel"><img src="assets/SpringBoot.png" alt="Spring Boot"><img src="assets/PostgreSQL.png" alt="PostgreSQL"><img src="assets/Redis.png" alt="Redis"><img src="assets/FastAPI.png" alt="FastAPI"><img src="assets/LangGraph.png" alt="LangGraph"><img src="assets/Kubernetes.png" alt="Kubernetes"><img src="assets/LitmusChaos.png" alt="LitmusChaos"><img src="assets/Prometheus.png" alt="Prometheus"><img src="assets/Grafana.png" alt="Grafana"><img src="assets/AWS.png" alt="AWS"><img src="assets/GitHubActions.png" alt="GitHub Actions">
+  <aside class="notes">(2:20~3:00) 서버는 세 대입니다. 백엔드는 요청과 결과를 저장하고, AI 서버와는 Redis 큐로 주고받아 요청이 사라지지 않게 했습니다. AI 서버는 판정과 수정안을 만들고, 샌드박스 서버는 쿠버네티스에 앱을 띄워 실제로 장애를 겁니다.
+장애를 내는 서버를 따로 떼어 다른 서버로 번지지 않게 했고, 측정값은 1초마다 AI 서버로 보내 샌드박스가 멈춰도 남게 했습니다.</aside>
+</section>
+
+<!-- ============ 5b. TECH STACK ============ -->
+<section class="slide" id="s5b" data-title="기술 스택">
+  <div class="kicker rise">04 <i>Tech Stack</i></div>
+  <h1 class="t rise d1">레포별 기술 스택</h1>
+  <div class="stk">
+    <div class="srow"><div class="sname"><small>codereferee-</small>AI</div>
+      <div class="ic" style="--i:0"><img src="assets/LangGraph.png" alt=""><span>LangGraph</span></div><div class="ic" style="--i:1"><img src="assets/FastAPI.png" alt=""><span>FastAPI</span></div><div class="ic" style="--i:2"><img src="assets/Prometheus.png" alt=""><span>Prometheus</span></div><div class="ic" style="--i:3"><img src="assets/Grafana.png" alt=""><span>Grafana</span></div></div>
+    <div class="srow"><div class="sname"><small>codereferee-</small>server</div>
+      <div class="ic" style="--i:4"><img src="assets/SpringBoot.png" alt=""><span>Spring Boot</span></div><div class="ic" style="--i:5"><img src="assets/PostgreSQL.png" alt=""><span>PostgreSQL</span></div><div class="ic" style="--i:6"><img src="assets/Redis.png" alt=""><span>Redis</span></div></div>
+    <div class="srow"><div class="sname"><small>codereferee-</small>sandbox</div>
+      <div class="ic" style="--i:7"><img src="assets/FastAPI.png" alt=""><span>FastAPI</span></div><div class="ic" style="--i:8"><img src="assets/Kubernetes.png" alt=""><span>Kubernetes</span></div><div class="ic" style="--i:9"><img src="assets/LitmusChaos.png" alt=""><span>LitmusChaos</span></div><div class="ic" style="--i:10"><img src="assets/Prometheus.png" alt=""><span>Prometheus</span></div></div>
+    <div class="srow"><div class="sname">공통</div>
+      <div class="ic" style="--i:11"><img src="assets/AWS.png" alt=""><span>AWS EC2</span></div><div class="ic" style="--i:12"><img src="assets/Vercel.png" alt=""><span>Vercel</span></div><div class="ic" style="--i:13"><img src="assets/GitHubActions.png" alt=""><span>GitHub Actions</span></div></div>
   </div>
-  <aside class="notes">(3:10~3:55) 시스템은 서버 세 대로 나뉩니다. BE는 Spring Boot로 요청을 받고 결과를 Postgres에 저장합니다. BE와 AI 사이는 Redis 큐로 연결해 결과가 유실되지 않게 했습니다.
-AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 패치를 만듭니다. 샌드박스는 쿠버네티스와 LitmusChaos로 실제 장애를 겁니다. 요청이 있을 때만 켜서 비용을 줄이고, 장애가 다른 서버로 번지지 않게 격리했습니다.
-메트릭은 샌드박스 안의 Prometheus Agent가 1초 단위로 모아 AI 서버로 바로 보냅니다. 샌드박스가 장애로 죽어도 데이터는 남습니다. 아래는 사용한 기술 스택입니다.</aside>
+  <aside class="notes">(3:00~3:05) 사용한 기술 스택입니다.</aside>
 </section>
 
 <!-- ============ 6. PIPELINE ============ -->
@@ -511,16 +573,16 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
       <g stroke="#cbd5e1" stroke-width="4" fill="none" marker-end="url(#ar)">
         <path d="M200 200 H250"/><path d="M490 200 H540"/><path d="M760 200 H810"/><path d="M1110 200 H1160"/><path d="M1360 200 H1400"/>
       </g>
-      <g class="pnode" data-pstep="1"><rect x="0" y="140" width="200" height="120" rx="20" fill="#1d5fd1"/><text x="100" y="195" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">Preflight</text><text x="100" y="228" text-anchor="middle" font-size="18" fill="#dbeafe">URL, git ls-remote</text>
-        <text x="100" y="300" text-anchor="middle" font-size="19" fill="#64748b">규칙만, 실행 없음</text></g>
-      <g class="pnode" data-pstep="2"><rect x="250" y="90" width="240" height="220" rx="22" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="10 8"/><text x="370" y="130" text-anchor="middle" font-size="24" font-weight="800" fill="#0f172a">Prep Stage</text>
+      <g class="pnode" data-pstep="1" style="--i:0"><rect x="0" y="140" width="200" height="120" rx="20" fill="#1d5fd1"/><text x="100" y="195" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">Preflight</text><text x="100" y="228" text-anchor="middle" font-size="18" fill="#dbeafe">URL, git ls-remote</text>
+        <text x="100" y="300" text-anchor="middle" font-size="19" fill="#64748b">코드는 아직 실행하지 않음</text></g>
+      <g class="pnode" data-pstep="2" style="--i:1"><rect x="250" y="90" width="240" height="220" rx="22" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="10 8"/><text x="370" y="130" text-anchor="middle" font-size="24" font-weight="800" fill="#0f172a">Prep Stage</text>
         <rect x="280" y="150" width="180" height="40" rx="10" fill="#4f7cff"/><text x="370" y="177" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Clone</text>
         <rect x="280" y="200" width="180" height="40" rx="10" fill="#4f7cff"/><text x="370" y="227" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Install</text>
         <rect x="280" y="250" width="180" height="40" rx="10" fill="#4f7cff"/><text x="370" y="277" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Test, Run</text>
         <path d="M370 312 V420" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 8" fill="none" marker-end="url(#ar)"/><text x="384" y="372" font-size="18" fill="#64748b">실패</text>
         <rect x="270" y="425" width="200" height="64" rx="32" fill="#e2e8f0"/><text x="370" y="465" text-anchor="middle" font-size="22" font-weight="800" fill="#475569">판정 불가</text></g>
-      <g class="pnode" data-pstep="3"><rect x="540" y="130" width="220" height="140" rx="20" fill="#b05fd6"/><text x="650" y="190" text-anchor="middle" font-size="27" font-weight="800" fill="#fff">Sandbox</text><text x="650" y="224" text-anchor="middle" font-size="18" fill="#f3e8ff">Image Build, k8s Deploy</text></g>
-      <g class="pnode" data-pstep="4"><rect x="810" y="40" width="300" height="400" rx="22" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="10 8"/><text x="960" y="80" text-anchor="middle" font-size="24" font-weight="800" fill="#0f172a">Chaos Test</text>
+      <g class="pnode" data-pstep="3" style="--i:2"><rect x="540" y="130" width="220" height="140" rx="20" fill="#b05fd6"/><text x="650" y="190" text-anchor="middle" font-size="27" font-weight="800" fill="#fff">Sandbox</text><text x="650" y="224" text-anchor="middle" font-size="18" fill="#f3e8ff">Image Build, k8s Deploy</text></g>
+      <g class="pnode" data-pstep="4" style="--i:3"><rect x="810" y="40" width="300" height="400" rx="22" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="10 8"/><text x="960" y="80" text-anchor="middle" font-size="24" font-weight="800" fill="#0f172a">Chaos Test</text>
         <g font-size="20" font-weight="800" fill="#78350f" text-anchor="middle">
         <rect x="840" y="100" width="240" height="46" rx="12" fill="#f5c542"/><text x="960" y="131">Pod Kill</text>
         <rect x="840" y="156" width="240" height="46" rx="12" fill="#f5c542"/><text x="960" y="187">OOM</text>
@@ -528,61 +590,58 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
         <rect x="840" y="268" width="240" height="46" rx="12" fill="#f5c542"/><text x="960" y="299">DB, Redis Down</text>
         <rect x="840" y="324" width="240" height="46" rx="12" fill="#f5c542"/><text x="960" y="355">Network Delay, Loss</text></g>
         <rect x="840" y="382" width="240" height="44" rx="12" fill="#86efac"/><text x="960" y="411" text-anchor="middle" font-size="18" font-weight="700" fill="#14532d">Prometheus CPU, Mem 1s</text></g>
-      <g class="pnode" data-pstep="5"><rect x="1160" y="140" width="200" height="120" rx="20" fill="#1d5fd1"/><text x="1260" y="195" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">Judge</text><text x="1260" y="228" text-anchor="middle" font-size="18" fill="#dbeafe">Rule-based, No LLM</text>
-        <text x="1260" y="300" text-anchor="middle" font-size="19" fill="#64748b">다운타임 vs 에러 버짓</text></g>
-      <g class="pnode" data-pstep="6">
+      <g class="pnode" data-pstep="5" style="--i:4"><rect x="1160" y="140" width="200" height="120" rx="20" fill="#1d5fd1"/><text x="1260" y="195" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">Judge</text><text x="1260" y="228" text-anchor="middle" font-size="18" fill="#dbeafe">Rule-based</text>
+        <text x="1260" y="300" text-anchor="middle" font-size="19" fill="#64748b">다운타임을 에러 버짓과 비교</text></g>
+      <g class="pnode" data-pstep="6" style="--i:5">
         <path d="M1500 200 m-100 0 l100 -75 l100 75 l-100 75z" fill="#1d5fd1"/><text x="1500" y="208" text-anchor="middle" font-size="24" font-weight="800" fill="#fff">Verdict</text>
         <path d="M1500 125 V60" stroke="#94a3b8" stroke-width="4" marker-end="url(#ar)"/>
         <rect x="1420" y="0" width="160" height="56" rx="28" fill="#4ade80"/><text x="1500" y="37" text-anchor="middle" font-size="24" font-weight="900" fill="#14532d">PASS</text>
         <path d="M1600 200 H1660 V300" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#ar)"/>
         <rect x="1580" y="305" width="150" height="56" rx="28" fill="#e2e8f0"/><text x="1655" y="341" text-anchor="middle" font-size="20" font-weight="800" fill="#475569">판정 불가</text>
-        <text x="1610" y="190" font-size="16" fill="#64748b">관측 불가, CPU 부족</text>
+        <text x="1610" y="190" font-size="16" fill="#64748b">관측 실패, CPU 부족</text>
         <path d="M1500 275 V420" stroke="#94a3b8" stroke-width="4" marker-end="url(#ar)"/>
         <text x="1512" y="350" font-size="18" fill="#e5484d" font-weight="800">FAIL</text></g>
-      <g class="pnode" data-pstep="7">
+      <g class="pnode" data-pstep="7" style="--i:6">
         <rect x="1160" y="425" width="560" height="160" rx="22" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="10 8"/>
         <text x="1440" y="460" text-anchor="middle" font-size="22" font-weight="800" fill="#0f172a">Self-Healing Loop (최대 3회)</text>
         <rect x="1185" y="480" width="160" height="60" rx="14" fill="#4f7cff"/><text x="1265" y="518" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">Critic</text>
-        <rect x="1360" y="480" width="160" height="60" rx="14" fill="#4f7cff"/><text x="1440" y="518" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">Refiner</text>
+        <rect x="1360" y="480" width="160" height="60" rx="14" fill="#0d9488"/><text x="1440" y="518" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">Refiner</text>
         <rect x="1535" y="480" width="160" height="60" rx="14" fill="#c56cdb"/><text x="1615" y="518" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">Re-verify</text>
-        <text x="1440" y="570" text-anchor="middle" font-size="17" fill="#64748b">원인 설명 → 패치 diff → 실패한 실험만 다시</text></g>
+        <text x="1440" y="570" text-anchor="middle" font-size="17" fill="#64748b">원인을 찾고 패치를 만든 뒤, 실패한 실험만 다시 돌림</text></g>
     </svg>
   </div>
-  <aside class="notes">(3:55~4:40) 검사 한 건이 지나가는 길입니다. [→] Preflight는 코드를 실행하지 않고 URL과 브랜치만 확인합니다. [→] 준비 단계에서 clone, 설치, 테스트를 하고, 여기서 실패하면 판정 불가입니다.
-[→] 통과하면 이미지를 빌드해 쿠버네티스에 배포하고, [→] Pod 종료, OOM, 동시 사용자 부하, DB와 Redis 차단, 네트워크 장애를 겁니다. 그동안 CPU와 메모리를 1초 단위로 기록합니다.
-[→] Judge가 규칙으로 판정하고, [→] 결과는 세 갈래로 나뉩니다. [→] 실패면 자가 수정 루프로 들어갑니다.</aside>
+  <aside class="notes">(3:05~3:35) 검사 한 건의 흐름입니다. 주소와 브랜치를 확인하고, 코드를 받아 설치와 테스트를 합니다. 여기서 막히면 판정 불가입니다. 통과하면 쿠버네티스에 배포해 장애와 부하를 걸고, 규칙으로 판정합니다. 실패하면 수정 루프로 들어갑니다. (이 장은 화면이 자동으로 한 단계씩 채워집니다.)</aside>
 </section>
 
 <!-- ============ 7. VERDICT ============ -->
 <section class="slide" id="s7" data-title="결과 판정">
   <div class="kicker rise">05 <i>Verdict</i></div>
-  <h1 class="t rise d1">결과는 세 가지, 기준은 <em>실제 다운타임</em></h1>
+  <h1 class="t rise d1">판정 기준</h1>
   <div class="verdicts">
     <div class="vcard pass rise d2"><span class="badge">PASS</span><span class="ko">통과</span>
-      <p>장애를 실제로 넣었고, 사용자가 겪은 <b>다운타임이 에러 버짓 안</b>이다. 목표 사용자 수에서도 요청이 실패하지 않았다.</p></div>
+      <ul class="vl"><li>장애 중 다운타임이 에러 버짓 이내</li><li>목표 동시 사용자 수에서 요청 실패 없음</li></ul></div>
     <div class="vcard fail rise d3"><span class="badge">FAIL</span><span class="ko">실패</span>
-      <p>복구하지 못했거나, <b>다운타임이 에러 버짓을 다 썼다</b>. 또는 적어 준 <b>목표 동시 사용자 수</b>에서 요청이 실패했다.</p></div>
+      <ul class="vl"><li>장애 후 복구되지 않음</li><li>다운타임이 에러 버짓 초과</li><li>목표 동시 사용자 수에서 요청 실패</li></ul></div>
     <div class="vcard na rise d4"><span class="badge">판정 불가</span>
-      <p>샌드박스에 <b>들어가지 못했다</b>. 설치, 테스트, 기동 실패, 테스트 없음, CPU 부족, 관측 불가. 재지 못한 것을 <b>합격이나 실패로 몰지 않는다</b>.</p></div>
+      <ul class="vl"><li>설치, 테스트, 기동 실패</li><li>테스트 코드 없음</li><li>샌드박스 CPU 부족, 메트릭 관측 실패</li></ul></div>
   </div>
   <div class="budget">
     <div class="card" data-step="1" id="budgetcard">
-      <div style="font-size:26px;font-weight:800">에러 버짓 <span style="font-weight:500;color:var(--ink2);font-size:21px">가용성 99.9% = 한 달에 43.2분까지 멈춰도 된다</span></div>
+      <div style="font-size:26px;font-weight:800">에러 버짓 <span style="font-weight:500;color:var(--ink2);font-size:21px">가용성 99.9% 기준, 한 달 43.2분</span></div>
       <div class="btrack"><i id="bfill"></i><div class="w20"></div></div>
       <div class="blabels"><span>0</span><span style="color:var(--warn);margin-left:10%">20% 넘으면 경고</span><span style="margin-left:auto">100% 다 쓰면 FAIL</span></div>
       <div style="font-size:20px;color:var(--ink3);margin-top:14px">기준 출처: Google SRE Book, SRE Workbook 에러 버짓 정책</div>
     </div>
     <div class="card" data-step="2">
-      <div style="font-size:26px;font-weight:800">경고는 판정을 바꾸지 않는다</div>
+      <div style="font-size:26px;font-weight:800">경고 <span style="font-weight:500;color:var(--ink2);font-size:21px">판정에는 반영하지 않고 리포트에만 표시</span></div>
       <div class="warnlist">
-        <span class="pill p-warn">복제본 1개</span><span class="pill p-warn">복구가 예상보다 느림</span><span class="pill p-warn">장애 중 응답 지연 증가</span><span class="pill p-warn">일부 시나리오만 실행</span>
+        <span class="pill p-warn">복제본 1개</span><span class="pill p-warn">복구가 예상보다 느림</span><span class="pill p-warn">부하 중 응답 1초 초과</span><span class="pill p-warn">일부 시나리오만 실행</span>
       </div>
-      <p style="font-size:21px;color:var(--ink2);margin-top:18px;line-height:1.5">복제본 1개는 사용자의 선택이다. 근거 없는 임계값으로 FAIL을 내지 않고 리포트에 남긴다.</p>
-    </div>
+          </div>
   </div>
-  <aside class="notes">(4:40~5:20) 통과는 장애를 실제로 넣었고, 사용자가 겪은 다운타임이 에러 버짓 안에 있을 때입니다. 실패는 복구하지 못했거나, 다운타임이 버짓을 넘었거나, 목표 동시 사용자 수에서 요청이 실패했을 때입니다. 판정 불가는 샌드박스에 들어가지 못했을 때입니다. 재지 못한 걸 합격이나 실패로 몰지 않습니다.
-[→] 에러 버짓은 구글 SRE에서 쓰는 개념입니다. 가용성 99.9%면 한 달에 43.2분까지 멈춰도 된다는 뜻이고, 버짓의 20%를 넘으면 경고, 다 쓰면 실패입니다.
-[→] 복제본이 1개라거나 복구가 예상보다 느린 건 경고로만 남기고 판정은 바꾸지 않습니다. 근거 없는 기준으로 실패를 내지 않기 위해서입니다.</aside>
+  <aside class="notes">(3:35~4:25) 통과는 장애를 넣어도 사용자가 겪은 중단 시간이 허용 범위 안일 때입니다. 실패는 복구하지 못했거나, 허용 범위를 넘었거나, 목표 사용자 수에서 요청이 실패했을 때입니다. 판정 불가는 저희가 재지 못한 경우입니다.
+[→] 허용 범위는 구글 SRE의 에러 버짓입니다. 가용성 99.9%면 한 달에 43분까지 멈춰도 된다는 뜻입니다.
+[→] 서버가 한 대뿐이거나 응답이 1초를 넘는 건 경고로만 남깁니다. 근거 없는 숫자로 불합격을 내지 않기 위해서입니다.</aside>
 </section>
 
 <!-- ============ 8. RULES ============ -->
@@ -596,7 +655,7 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
         <div class="hbar"><div class="lab"><span>규칙 (Rule-based)</span><em style="color:var(--blue)">100%</em></div><div class="tr"><i style="--w:100%;background:var(--blue)"></i></div></div>
         <div class="hbar" style="margin-bottom:0"><div class="lab"><span>LLM 판정</span><em style="color:var(--ink2)">94%</em></div><div class="tr"><i style="--w:94%;background:#94a3b8"></i></div></div>
       </div>
-      <div class="quote" data-step="2">심사받는 쪽이 심사자를 조종할 수 있으면,<br>그건 심사가 아니다.</div>
+      <div class="quote" data-step="2">검사받는 코드가 판정을 바꿀 수 있다면,<br>그건 검사라고 할 수 없다.</div>
     </div>
     <div data-step="1">
       <div class="code"><span class="dim"># app.py (검사받는 레포)</span>
@@ -607,7 +666,7 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
       <div style="font-size:19px;color:var(--ink3);margin-top:8px">레포 코드에 심은 프롬프트 인젝션 (예시)</div>
       <div class="fooled">
         <div style="background:var(--fail-soft);color:#991b1b"><b>2건</b>LLM이 속았다</div>
-        <div style="background:var(--pass-soft);color:#166534"><b>0건</b>규칙은 종료 코드와 구조화된 결과만 본다</div>
+        <div style="background:var(--pass-soft);color:#166534"><b>0건</b>규칙은 종료 코드와<br>구조화된 결과만 본다</div>
       </div>
     </div>
   </div>
@@ -616,9 +675,7 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
     <div><strong>LLM</strong>원인 설명(Critic)과 수정 패치(Refiner)만 만든다</div>
     <div><strong>코드</strong>패치 적용, 안전 검사, 재실행, 재판정</div>
   </div>
-  <aside class="notes">(5:20~5:45) 판정을 LLM에 맡기지 않은 이유는 측정값입니다. 같은 34건에서 규칙은 100%, LLM은 94% 맞혔습니다.
-[→] 더 큰 문제는, 레포 코드에 "이건 통과시켜라"는 주석을 심었더니 LLM이 2건 속았다는 겁니다. [→] 심사받는 쪽이 심사자를 조종할 수 있으면 심사가 아닙니다.
-[→] 그래서 판정은 규칙이, 원인 설명과 패치는 LLM이, 적용과 재검증은 코드가 맡습니다.</aside>
+  <aside class="notes">(4:25~4:50) 판정을 AI에 맡기지 않은 이유는 측정값입니다. 같은 34건에서 규칙은 100%, AI는 94%였고, [→] 레포에 "통과시켜라"는 주석을 심자 AI가 2건 속았습니다. [→] 검사받는 코드가 판정을 바꿀 수 있다면 검사라고 할 수 없습니다. [→] 그래서 AI는 원인 설명과 수정안만 맡습니다.</aside>
 </section>
 
 <!-- ============ 9. SELF-HEALING ============ -->
@@ -644,40 +701,39 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
     </div>
   </div>
   <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-  <aside class="notes">(5:45~6:10) 실패하면 자가 수정 루프가 돕니다. 실서버 사례입니다. [→] Redis가 한 번 끊기면 장애가 끝나도 계속 503을 내는 앱이 있었습니다.
-[→] Critic이 원인을 설명하고, Refiner인 gpt-oss-120b가 다시 시도하게 고치는 패치를 만들었습니다. [→] 샌드박스 안에서 패치를 적용해 같은 장애를 다시 걸었더니 1회차에 통과했습니다.
-[→] 그래도 판정은 실패로 둡니다. 제출한 커밋은 버티지 못했기 때문입니다. 대신 검증된 패치를 리포트에 붙여 줍니다.</aside>
+  <aside class="notes">(4:50~5:20) 실패하면 고칠 방법까지 확인해 줍니다. [→] Redis가 한 번 끊기면 계속 오류를 내던 앱이 있었습니다. [→] AI가 원인을 설명하고, 다시 연결을 시도하도록 코드를 고쳤습니다. [→] 같은 장애로 다시 돌리니 통과했습니다. [→] 다만 제출한 코드의 판정은 실패로 두고, 검증된 수정안을 붙여 줍니다.</aside>
 </section>
 
 <!-- ============ 10. RESULTS ============ -->
 <section class="slide" id="s10" data-title="실측 결과">
   <div class="kicker rise">06 <i>Results</i></div>
-  <h1 class="t rise d1">실제 공개 레포로 돌려 봤다</h1>
+  <h1 class="t rise d1">공개 레포 실측 테스트</h1>
   <div class="kpis">
-    <div class="kpi rise d2"><b><span class="count" data-to="50">0</span><small>개</small></b><p class="kd">공개 GitHub 레포<br>실서버 64회 실행</p></div>
-    <div class="kpi rise d3"><b style="color:var(--pass)"><span class="count" data-to="0">0</span><small>건</small></b><p class="kd">인프라 탓 판정 불가<br>(샌드박스, k8s 원인)</p></div>
-    <div class="kpi rise d4"><b><span class="count" data-to="3.69" data-dec="2">0</span><small>초</small></b><p class="kd">실제 OOMKilled 후<br>복구까지 걸린 시간</p></div>
-    <div class="kpi rise d5"><b><span class="count" data-to="4">0</span><small>종</small></b><p class="kd">네트워크 장애 실주입<br>지연, 손실, DB, Redis</p></div>
+    <div class="kpi rise d2"><b style="color:var(--blue)"><span class="count" data-to="230">0</span><small>개</small></b><p class="kd">공개 GitHub 레포<br>실행 가능 여부 사전 점검</p></div>
+    <div class="kpi rise d3"><b style="color:var(--blue)"><span class="count" data-to="50">0</span><small>개</small></b><p class="kd">공개 레포를 실제로<br>배포하고 검증</p></div>
+    <div class="kpi rise d4"><b style="color:var(--fail)"><span class="count" data-to="9.40" data-dec="2">0</span><small>초</small></b><p class="kd">메모리 초과로 죽은 앱이<br>다시 응답하기까지 (복제본 1개)</p></div>
+    <div class="kpi rise d5"><b style="color:var(--pass)"><span class="count" data-to="0">0</span><small>건</small></b><p class="kd">같은 장애에서 실패한 요청<br>(복제본 2개 중 1개만 죽였을 때)</p></div>
   </div>
   <div class="batches">
-    <div class="card" data-step="1" id="batchcard">
-      <div class="sbar"><div class="lab">1차, 카오스 없이 <span>30개</span></div><div class="tr"><i style="--w:46.7%;background:var(--pass)">통과 14</i><i style="--w:53.3%;background:#94a3b8">판정 불가 16</i></div></div>
-      <div class="sbar"><div class="lab">2차, 장애 묶음 포함 <span>34개</span></div><div class="tr"><i style="--w:52.9%;background:var(--pass)">통과 18</i><i style="--w:47.1%;background:#94a3b8">판정 불가 16</i></div></div>
-      <div class="legend"><span><i style="background:var(--pass)"></i>통과</span><span><i style="background:var(--fail)"></i>실패 0</span><span><i style="background:#94a3b8"></i>판정 불가: DB 필요, 레포 자체 빌드 실패 등 레포 쪽 원인</span></div>
+    <div class="card" data-step="1">
+      <div style="font-size:24px;font-weight:800;margin-bottom:18px">돌려 보니 나온 오분류, 이렇게 고쳤다</div>
+      <div class="tl" style="margin-bottom:18px"><i class="dot" style="background:var(--fail)"></i><div><h5 style="font-size:23px">50개 중 9건: 코드를 받지도 못했는데 "실패"</h5><p>브랜치나 레포가 없는 경우다. 코드 결함이 아니므로 <b style="color:var(--ink)">판정 불가</b>로 옮겼다.</p></div></div>
+      <div class="tl" style="margin-bottom:18px"><i class="dot" style="background:var(--na)"></i><div><h5 style="font-size:23px">정상 레포 30개 중 14개가 "판정 불가"</h5><p>테스트용 패키지를 설치하지 않아서였다. 레포 설정에서 찾아 <b style="color:var(--ink)">자동으로 설치</b>하게 했다.</p></div></div>
+      <div class="tl"><i class="dot" style="background:var(--warn)"></i><div><h5 style="font-size:23px">230개 중 14개: DB가 있어야 뜨는 앱</h5><p>자동으로 정하기 어려운 의존성은 <b style="color:var(--ink)">설정 파일로 지정</b>받는다.</p></div></div>
     </div>
     <div class="insight" data-step="2">
-      <b>장애만 걸면 예제 레포는 거의 다 통과했다.</b><br>복제본 1개여도 재기동이 빨라 버짓 안에 들어온다.<br><br>
-      "사용자가 늘었을 때"를 가르려면 부하를 직접 재야 한다. 그래서 <b>동시 사용자 10 → 50 → 100 → 200명</b> 시나리오를 기본 묶음에 넣었다.
+      <b>서버가 한 대뿐이면 장애 때 끊긴다.</b><br>같은 메모리 초과 장애에서<br>복제본이 1개면 9.40초 동안 요청이 실패했고,<br>2개 중 1개만 죽으면 실패한 요청이 없었다.<br><br>
+      그래서 실패하면 <b>복제본 수를 늘리는 수정안</b>을 만들고,<br>같은 장애로 다시 돌려 확인한다.
     </div>
   </div>
-  <aside class="notes">(6:10~6:50) 실제 공개 레포로 돌려 봤습니다. 50개 레포를 실서버에서 64번 돌렸고, 가장 중요한 숫자는 인프라 탓 판정 불가 0건입니다. 판정 불가는 전부 DB가 꼭 필요하거나 레포 자체가 빌드되지 않는 등 레포 쪽 원인이었습니다. 실제로 OOMKilled가 난 앱이 3.69초 만에 복구되는 것도 관측했습니다.
-[→] 1차로 30개를 장애 없이 돌렸을 때 14개가 통과했고, 2차로 장애 묶음을 넣어 34개를 돌렸을 때 18개가 통과했습니다.
-[→] 그런데 장애만 걸면 예제 레포는 거의 다 통과했습니다. 그래서 원래 기획 의도인 "사용자가 늘 때"를 직접 재려고 동시 사용자 부하를 넣었습니다.</aside>
+  <aside class="notes">(5:20~6:00) 실제 공개 레포 230개를 미리 점검했고, 50개는 실제로 배포해 검증했습니다.
+[→] 돌려 보니 코드를 받지도 못했는데 실패로 나오거나, 테스트 패키지를 설치하지 않아 판정 불가로 나온 경우가 있었습니다. 하나씩 고쳤습니다. 못 잰 걸 실패라고 하면 멀쩡한 코드를 고치게 되니까요.
+[→] 메모리 초과 장애에서 서버가 한 대면 9.4초 동안 요청이 실패했고, 두 대면 실패가 없었습니다.</aside>
 </section>
 
 <!-- ============ 11. PETCLINIC ============ -->
 <section class="slide" id="s11" data-title="사례: spring-petclinic">
-  <div class="kicker rise">06 <i>Case Study</i></div>
+  <div class="kicker rise">06 <i>Experiment Analysis</i></div>
   <h1 class="t rise d1">spring-petclinic, 목표 동시 사용자 200명</h1>
   <div class="pc">
     <div class="chart rise d2">
@@ -696,17 +752,48 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
       </svg>
     </div>
     <div class="story">
-      <div class="st" data-step="1"><h5><span class="pill p-fail">FAIL</span>첫 측정: 200명에서 목표 미달</h5><p>100명까지는 버텼고 200명에서 p95가 78배로 뛰며 요청이 시간 초과. Critic은 "복제본 1개라 여유가 없다"고 짚었다.</p></div>
-      <div class="st" data-step="2"><h5><span class="pill p-na">의심</span>이게 앱의 한계인가, 샌드박스의 한계인가?</h5><p>2코어 노드에서 앱이 쓰지도 않는 MySQL, Postgres까지 띄워 CPU를 나눠 쓰고 있었다. <b style="color:var(--ink)">측정 환경이 공정하지 않았다.</b></p></div>
-      <div class="st" data-step="3"><h5><span class="pill p-blue">수정</span>CPU가 모자라면 재지 않는다</h5><p>노드 CPU가 부족하면 부하 결과를 판정 불가로 낸다. 쓰지 않는 DB는 띄우지 않고, 노드를 4코어로 올렸다.</p></div>
+      <div class="st" data-step="1"><h5><span class="pill p-fail">FAIL</span>첫 측정: 200명에서 목표 미달</h5><p>100명까지는 버텼고 200명에서 p95가 78배로 뛰며 요청이 시간 초과.<br>Critic은 "복제본 1개라 여유가 없다"고 짚었다.</p></div>
+      <div class="st" data-step="2"><h5><span class="pill p-na">의심</span>이게 앱의 한계인가, 샌드박스의 한계인가?</h5><p>2코어 노드에서 앱이 쓰지도 않는 MySQL, Postgres까지 띄워<br>CPU를 나눠 쓰고 있었다. <b style="color:var(--ink)">측정 환경이 공정하지 않았다.</b></p></div>
+      <div class="st" data-step="3"><h5><span class="pill p-blue">수정</span>CPU가 모자라면 재지 않는다</h5><p>노드 CPU가 부족하면 부하 결과를 판정 불가로 낸다.<br>쓰지 않는 DB는 띄우지 않고, 노드를 4코어로 올렸다.</p></div>
       <div class="st" data-step="4"><h5><span class="pill p-pass">PASS</span>재측정: 200명까지 실패 0%</h5><p>응답은 58배 느려져 복제본 1개 경고를 달았지만, 요청은 모두 처리했다.</p></div>
     </div>
   </div>
-  <aside class="notes">(6:50~7:40) 대표 사례가 Spring 공식 예제인 petclinic입니다. 목표를 200명으로 잡았습니다.
-[→] 첫 측정에서는 100명까지 버티다가 200명에서 응답이 78배 느려지고 요청이 시간 초과로 끊겨 실패가 나왔습니다.
-[→] 그런데 이게 정말 앱의 한계인지 의심했습니다. 확인해 보니 2코어 샌드박스에서 앱이 쓰지도 않는 DB 두 개까지 띄워 CPU를 나눠 쓰고 있었습니다.
-[→] 그래서 CPU가 모자라면 부하 결과를 판정 불가로 내도록 규칙을 바꾸고, 쓰지 않는 DB는 띄우지 않게 하고, 노드를 4코어로 올렸습니다.
-[→] 다시 재니 200명까지 실패 0%로 통과했습니다. 측정 환경이 공정하지 않으면 판정하지 않는다, 이 사례에서 얻은 원칙입니다.</aside>
+  <aside class="notes">(6:00~6:40) 대표 사례는 Spring 공식 예제 petclinic입니다. [→] 첫 측정에서는 200명에서 응답이 78배 느려지며 실패했습니다. [→] 그런데 확인해 보니 작은 샌드박스에서 쓰지도 않는 DB까지 띄우고 있었습니다. [→] 그래서 CPU가 모자라면 판정하지 않도록 바꾸고 환경을 고쳤습니다. [→] 다시 재니 200명까지 실패 없이 통과했습니다.</aside>
+</section>
+
+<!-- ============ 11b. EXPANSION (팜플렛 이후) ============ -->
+<section class="slide" id="s11b" data-title="팜플렛 이후 넓힌 범위">
+  <div class="kicker rise">06 <i>Since the Pamphlet</i></div>
+  <h1 class="t rise d1">한 개짜리 앱에서, <em>실제 서비스 구성</em>으로</h1>
+  <div class="exp">
+    <div class="card rise d2"><span class="tag">여러 서비스, 여러 레포</span><h4>프론트, API, DB를 함께 띄운다</h4><p>한 레포 안의 여러 서비스, 그리고 서로 다른 레포를 설정 파일 하나로 묶어 한 환경에 배포한다.</p><div class="chips"><i>앱 2개</i><i>3개</i><i>5개 구성 실측</i></div></div>
+    <div class="card rise d3"><span class="tag">실제 업무 흐름</span><h4>브라우저로 사용자처럼 쓴다</h4><p>"살아 있나"만 보지 않고 화면에서 API, DB까지 이어지는 업무가 장애 중에도 되는지 본다. 로그인이 필요한 경로도 포함.</p></div>
+    <div class="card rise d4"><span class="tag">오래 걸리는 레포</span><h4>단계별 시간 제한과 재시도</h4><p>설치가 시간 초과되면 정리한 뒤 제한을 늘려 다시 시도한다. 전체 예산을 다 쓰면 어디서 멈췄는지 남기고 끝낸다.</p></div>
+  </div>
+  <div class="e2e" data-step="1">
+    <div class="card" style="padding:22px 30px">
+      <div style="font-size:22px;font-weight:800;margin-bottom:6px">전체 흐름 검증 7건 <span style="font-weight:500;color:var(--ink3);font-size:18px">웹 요청 → 큐 → AI → Sandbox → DB 저장</span></div>
+      <table>
+        <tr><td>단일 레포, 라우팅 단절</td><td><span class="pill p-pass">PASSED</span></td></tr>
+        <tr><td>멀티레포 FE·API·DB, 부하와 장애 4종</td><td><span class="pill p-pass">PASSED</span></td></tr>
+        <tr><td>다운로드 실패 → 재시도 / 설치 시간 초과 → 연장 재시도</td><td><span class="pill p-pass">PASSED ×2</span></td></tr>
+        <tr><td>추가 레포 누락 / 중간 빌드 실패 / 전체 시간 소진</td><td><span class="pill p-na">판정 불가 ×3</span></td></tr>
+      </table>
+    </div>
+    <div class="card" style="padding:22px 30px">
+      <div style="font-size:22px;font-weight:800">동시 사용자별 요청 실패율 <span style="font-weight:500;color:var(--ink3);font-size:18px">멀티레포 테스트 앱</span></div>
+      <div class="lbars" id="lbars">
+        <div><em>0%</em><i data-h="1" style="background:var(--pass)"></i></div>
+        <div><em>0%</em><i data-h="1" style="background:var(--pass)"></i></div>
+        <div><em>2.44%</em><i data-h="4" style="background:var(--warn)"></i></div>
+        <div><em>8.87%</em><i data-h="11" style="background:var(--warn)"></i></div>
+        <div><em style="color:var(--fail)">79.12%</em><i data-h="79" style="background:var(--fail)"></i></div>
+      </div>
+      <div class="lbx"><span>5명</span><span>10명</span><span>50명</span><span>100명</span><span>200명</span></div>
+    </div>
+  </div>
+  <aside class="notes">(6:40~7:10) 팜플렛 이후에는 프론트, API, DB처럼 여러 서비스와 여러 레포를 함께 띄우고, 브라우저로 실제 업무 흐름까지 확인하도록 넓혔습니다.
+[→] 전체 흐름으로 일곱 가지 경우를 돌렸고, 오른쪽은 테스트 앱에 사용자를 늘렸을 때 200명에서 요청의 79%가 실패한 결과입니다.</aside>
 </section>
 
 <!-- ============ 12. DEMO ============ -->
@@ -716,18 +803,16 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
   <div class="browser rise d2">
     <div class="bbar"><i></i><i></i><i></i><div class="tab">CodeReferee</div></div>
     <div class="shots" id="shots">
-      <figure class="cur" data-cap="검증 요청"><img src="assets/screen-request.jpg" alt="검증 요청 화면"></figure>
-      <figure data-cap="진행과 판정"><img src="assets/screen-verdict.jpg" alt="진행과 판정 화면"></figure>
-      <figure data-cap="장애 복구"><img src="assets/screen-recovery.jpg" alt="장애 복구 화면"></figure>
-      <figure data-cap="동시 사용자 부하"><img src="assets/screen-load.jpg" alt="동시 사용자 부하 화면"></figure>
-      <figure data-cap="자원 사용 추이"><img src="assets/screen-metrics.jpg" alt="자원 사용 추이 화면"></figure>
-      <figure data-cap="수정안"><img src="assets/screen-patch.jpg" alt="수정안 화면"></figure>
+      <figure class="cur" data-cap="검증 요청"><img src="assets/demo-1-request.jpg" alt="검증 요청 화면"></figure>
+      <figure data-cap="진행과 판정"><img src="assets/demo-2-verdict.jpg" alt="진행과 판정 화면"></figure>
+      <figure data-cap="장애 복구, 자원 사용 추이"><img src="assets/demo-3-recovery.jpg" alt="장애 복구 화면"></figure>
+      <figure data-cap="동시 사용자 부하"><img src="assets/demo-4-load.jpg" alt="동시 사용자 부하 화면"></figure>
+      <figure data-cap="실패한 검사"><img src="assets/demo-5-fail.jpg" alt="실패 화면"></figure>
+      <figure data-cap="수정안"><img src="assets/demo-6-patch.jpg" alt="수정안 화면"></figure>
     </div>
   </div>
   <i data-step="1" hidden></i><i data-step="2" hidden></i><i data-step="3" hidden></i><i data-step="4" hidden></i><i data-step="5" hidden></i>
-  <aside class="notes">(7:40~8:40) 실제 화면입니다. 검증 요청 화면에서 URL, 검사 종류, 예상 사용자 수를 넣습니다.
-[→] 진행 중에는 지금 어느 단계인지 보여 주고, 끝나면 최종 판정이 나옵니다. [→] 장애 복구 화면에서는 장애 중 가동률과 복구 시간을,
-[→] 부하 화면에서는 10명부터 200명까지 구간별 실패율과 응답 시간을 보여 줍니다. [→] 자원 사용 추이는 1초 단위 CPU와 메모리이고, [→] 실패했다면 Refiner의 수정안과 재검증 절차가 함께 나옵니다.</aside>
+  <aside class="notes">(7:10~7:45) 실제 화면입니다. 주소와 검사 종류, 예상 사용자 수를 넣습니다. [→] 진행 단계와 최종 판정이 나오고, [→] 장애 중 가동률과 복구 시간, CPU와 메모리 추이를 보여 줍니다. [→] 부하 결과는 사용자 수별 실패율과 응답 시간입니다. [→] 실패한 검사에서는 [→] 수정안과 재검증 결과가 함께 나옵니다.</aside>
 </section>
 
 <!-- ============ 13. LIMITS ============ -->
@@ -735,14 +820,12 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
   <div class="kicker rise">08 <i>Next</i></div>
   <h1 class="t rise d1">향후 계획</h1>
   <div class="next3">
-    <div class="card rise d2"><b>01</b><strong>샌드박스 인스턴스 업사이징</strong><span>지금은 2코어 노드라 복제본을 늘린 부하를 공정하게 잴 수 없다. CPU가 모자라면 부하 결과를 <em>판정 불가</em>로 처리하고 있다.</span><div class="up"><i>2 cores</i><s></s><i class="on">4+ cores</i></div></div>
-    <div class="card rise d3"><b>02</b><strong>동적 타임아웃</strong><span>요청 기한은 샌드박스까지 전달된다. 다음은 실측 분포를 쌓아 레포 크기와 빌드 시간으로 기한을 미리 예측하는 것.</span><div class="tbar"><i></i></div></div>
-    <div class="card rise d4"><b>03</b><strong>부하와 장애를 동시에</strong><span>평소 트래픽을 걸어 둔 채 Pod를 죽여야 실제 운영과 같다. 안전 인원의 절반을 배경 부하로 두는 안을 검토 중.</span><div class="mix"><i></i><i></i><i></i><i class="x"></i><i></i></div></div>
+    <div class="card rise d2"><b>01</b><strong>샌드박스 업사이징, 자동 기동</strong><span>샌드박스 CPU가 모자라면 부하 결과를 <em>판정 불가</em>로 처리하고 있다. 코어를 늘리고, 요청이 올 때만 서버를 켜고 끄며, 여러 요청을 나눠 배정한다.</span><div class="up"><i>2 cores</i><s></s><i class="on">4+ cores</i></div></div>
+    <div class="card rise d3"><b>02</b><strong>동적 타임아웃</strong><span>단계별 시간 제한과 연장 재시도는 만들었다. 다음은 실측을 쌓아 레포 크기와 빌드 이력으로 걸릴 시간을 미리 예측하는 것.</span><div class="tbar"><i></i></div></div>
+    <div class="card rise d4"><b>03</b><strong>여러 레포를 각각 고치기</strong><span>여러 레포를 함께 띄워 검사하는 것까지 됐다. 실패했을 때 어느 레포의 어느 파일을 고칠지 나눠 수정하는 기능을 만드는 중.</span><div class="mix"><i></i><i></i><i></i><i class="x"></i><i></i></div></div>
   </div>
-  <aside class="notes">(8:40~9:40) 시간이 모자라면 이 장은 넘어갑니다.
-향후 계획은 세 가지입니다. 첫째, 샌드박스 인스턴스 업사이징입니다. 지금은 2코어 노드라 복제본을 늘린 부하를 공정하게 잴 수 없어서, CPU가 모자라면 부하 결과를 판정 불가로 처리하고 있습니다. 4코어 이상으로 올리면 이 제약이 풀립니다.
-둘째, 동적 타임아웃입니다. 실측 데이터를 쌓아 레포 크기와 빌드 시간으로 검사 기한을 미리 예측하려고 합니다.
-셋째, 평소 트래픽을 걸어 둔 채 장애를 주입하는 실험입니다. 실제 운영 환경에 더 가까운 검증이 됩니다.</aside>
+  <aside class="notes">(7:45~8:20) 시간이 모자라면 이 장은 넘어갑니다.
+앞으로는 세 가지를 하려고 합니다. 샌드박스 CPU를 늘리고 요청이 올 때만 서버를 켜 비용을 줄이는 것, 레포 크기에 맞춰 검사 시간을 미리 예측하는 것, 여러 레포에 걸친 실패를 레포별로 나눠 고치는 것입니다.</aside>
 </section>
 
 <!-- ============ 14. END ============ -->
@@ -751,14 +834,15 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
   <div class="thanks rise d1">감사합니다</div>
   <div class="rise d2" style="margin-top:40px;font-size:30px;color:#94a3b8">사용자가 늘어도, 버티는가?</div>
   <div class="rise d3" style="margin-top:80px;font-size:24px;color:#64748b">github.com/CodeReferee-Team</div>
-  <aside class="notes">(9:40~9:50) CodeReferee는 "사용자가 늘어도 버티는가?"를 직접 재고, 근거와 고칠 방법까지 돌려줍니다. 들어 주셔서 감사합니다.</aside>
+  <aside class="notes">(8:20~8:35) CodeReferee는 사용자가 늘어도 버티는지를 직접 재고, 근거와 고칠 방법까지 돌려줍니다. 근거 없는 숫자로 불합격을 내지 않고, 못 쟀으면 못 쟀다고 말합니다. 감사합니다.</aside>
 </section>
 
 <div class="chrome"><span class="brand"><b>Code</b><span>Referee</span></span><span id="pageno"></span></div>
 <div id="progress"></div>
 </div></div>
 <div id="notes"><div class="t" id="notesTitle"></div><div id="notesBody"></div></div>
-<div id="help">← → 이동, F 전체화면, N 발표자 노트</div>
+<div id="help">← → 이동, F 전체화면, P 발표자 창, N 노트</div>
+<div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
 
 <script>
 (function(){
@@ -766,13 +850,24 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
   const slides=[...document.querySelectorAll('.slide')];
   let cur=0, step=0;
 
-  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='scale('+s+')';}
+  const PRESENTER=new URLSearchParams(location.search).has('presenter');
+  if(PRESENTER){document.body.classList.add('presenter');document.title='발표자 보기 - CodeReferee';}
+  const bc=('BroadcastChannel' in window)?new BroadcastChannel('codereferee-slides'):null;
+  let remote=false;
+  const vp=document.getElementById('viewport');
+  function fit(){const s=Math.min(vp.clientWidth/1920,vp.clientHeight/1080);stage.style.transform='scale('+s+')';}
   addEventListener('resize',fit);fit();
 
   // title slide user dots
   (function(){const g=document.getElementById('userdots');let h='';let i=0;
     for(let r=0;r<9;r++)for(let c=0;c<14;c++){if(Math.random()<.35+c*.04){const x=120+c*66+(r%2)*20,y=980-r*54-c*c*2.6;if(y<120)continue;h+=`<circle cx="${x}" cy="${y}" r="${7+Math.random()*3}" style="animation-delay:${(.2+c*.12+Math.random()*.2).toFixed(2)}s;transform-origin:${x}px ${y}px"/>`;i++;}}
     g.innerHTML=h;})();
+
+  function drawLoop(){const f=[...document.querySelectorAll('#s4 .fstep')];if(f.length<6)return;const a=f[2],b=f[5];
+    const ya=a.offsetTop+a.offsetHeight/2,yb=b.offsetTop+b.offsetHeight/2,xr=a.offsetLeft+a.offsetWidth,x=xr+46;
+    document.getElementById('loopPath').setAttribute('d',`M${xr+6} ${yb} H${x} V${ya} H${xr+10}`);
+    const ym=(ya+yb)/2,bg=document.getElementById('loopBg');bg.setAttribute('x',x-75);bg.setAttribute('y',ym-35);[['lt1',ym-6],['lt2',ym+20]].forEach(([id,y])=>{const e=document.getElementById(id);e.setAttribute('x',x);e.setAttribute('y',y);});}
+  document.fonts&&document.fonts.ready.then(drawLoop);
 
   const maxStep=s=>{let m=0;s.querySelectorAll('[data-step]').forEach(e=>m=Math.max(m,+e.dataset.step));return m;};
 
@@ -788,7 +883,34 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
     document.getElementById('notesBody').textContent=n?n.textContent:'';
     if(location.hash!=='#'+(cur+1))history.replaceState(null,'','#'+(cur+1));
     hooks[s.id]&&hooks[s.id](step);
+    if(bc&&!remote)bc.postMessage({cur,step});
+    if(PRESENTER)presenter();
   }
+  // ---- presenter view ----
+  let t0=Date.now();
+  const fmt=sec=>String(Math.floor(sec/60)).padStart(2,'0')+':'+String(Math.floor(sec%60)).padStart(2,'0');
+  function presenter(){
+    const s=slides[cur],raw=(s.querySelector('aside.notes')||{}).textContent||'';
+    const plan=raw.match(/\((\d+:\d\d)~(\d+:\d\d)\)/);
+    const parts=raw.replace(/\(\d+:\d\d~\d+:\d\d\)\s*/,'').split('[→]');
+    const box=document.getElementById('pvNotes');box.innerHTML='';
+    parts.forEach((t,i)=>{if(i){const a=document.createElement('span');a.className='arw';a.textContent='[→]';box.appendChild(a);}
+      const e=document.createElement('span');e.className=i<step?'done':i===step?'now':'todo';e.textContent=t;box.appendChild(e);});
+    const cur_=box.querySelector('.now');cur_&&cur_.scrollIntoView({block:'nearest'});
+    document.getElementById('pvMeta').innerHTML='<b>'+(cur+1)+' / '+slides.length+'  '+(s.dataset.title||'')+'</b><br>단계 '+step+' / '+maxStep(s)+(plan?'<br>계획 '+plan[1]+' ~ '+plan[2]:'');
+    const nx=step<maxStep(s)?'같은 장 다음 단계':(slides[cur+1]?(cur+2)+'. '+slides[cur+1].dataset.title:'마지막 장');
+    document.getElementById('pvNext').innerHTML='다음<b>'+nx+'</b>';
+    window.__plan=plan?plan[2]:null;
+  }
+  if(PRESENTER){
+    setInterval(()=>{const sec=(Date.now()-t0)/1000,el=document.getElementById('pvTimer');el.textContent=fmt(sec);
+      const [m,ss]=(window.__plan||'99:00').split(':');el.classList.toggle('over',sec>m*60+ +ss);},500);
+    document.getElementById('pvReset').onclick=()=>{t0=Date.now();};
+    document.getElementById('pvPrev').onclick=()=>prev();
+    document.getElementById('pvNextBtn').onclick=()=>next();
+  }
+  if(bc)bc.onmessage=e=>{const d=e.data;if(d.req){if(!PRESENTER)bc.postMessage({cur,step});return;}
+    if(d.cur===cur&&d.step===step)return;remote=true;go(d.cur,d.step);remote=false;};
   function go(i,st){const prev=cur;cur=Math.max(0,Math.min(slides.length-1,i));step=st===undefined?0:st;
     if(prev!==cur){enter[slides[cur].id]&&enter[slides[cur].id]();}
     apply();}
@@ -801,14 +923,16 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='n'||e.key==='N'){document.getElementById('notes').classList.toggle('show');}
+    else if((e.key==='p'||e.key==='P')&&!PRESENTER){window.open(location.pathname+'?presenter#'+(cur+1),'codereferee-presenter','width=1280,height=800');}
   });
-  document.getElementById('viewport').addEventListener('click',e=>{if(e.target.closest('a'))return;(e.clientX>innerWidth*0.3)?next():prev();});
+  vp.addEventListener('click',e=>{if(e.target.closest('a'))return;const r=vp.getBoundingClientRect();(e.clientX-r.left>r.width*0.3)?next():prev();});
   let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
   addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)(d<0?next:prev)();tx=null;});
 
   // ---- per-slide behaviour ----
   const timers={};
   const enter={
+    s4(){drawLoop();},
     s2(){clearInterval(timers.s2);const seq=[[10,30,0],[50,45,0],[100,120,0],[200,2566,6]];let k=0;
       const U=document.getElementById('mu'),R=document.getElementById('mr'),F=document.getElementById('mf');
       const set=([u,r,f])=>{U.style.width=(u/200*100)+'%';U.style.background='var(--blue)';document.getElementById('mut').textContent=u+'명';
@@ -821,24 +945,21 @@ AI 서버는 FastAPI와 LangGraph로 파이프라인을 돌리면서 판정과 �
       l.getBoundingClientRect();l.style.transition='stroke-dashoffset 1.8s ease .5s';l.style.strokeDashoffset=0;}
   };
   const hooks={
-    s6(st){
-      document.querySelectorAll('#s6 .pnode').forEach(g=>g.classList.toggle('on',+g.dataset.pstep<=Math.max(1,st+1)));
-      },
     s7(st){document.getElementById('bfill').style.width=st>=1?'12%':'0';},
     s8(st){},
     s10(st){document.querySelectorAll('#s10 .sbar .tr i').forEach(i=>i.style.width=st>=1?getComputedStyle(i).getPropertyValue('--w'):'0');},
     s11(st){document.getElementById('pcfirst').style.opacity=st>=1?1:0;},
+    s11b(st){document.querySelectorAll('#lbars i').forEach(i=>i.style.height=st>=1?i.dataset.h+'%':'0');},
     s12(st){const fs=document.querySelectorAll('#shots figure');fs.forEach((f,i)=>f.classList.toggle('cur',i===st));const c=document.getElementById('dcap');c.querySelector('b').textContent=st+1;c.querySelector('span').textContent=fs[st].dataset.cap;}
   };
-  // s6 has 6 steps via hidden markers
-  (function(){const s6=document.getElementById('s6');for(let i=1;i<=6;i++){const m=document.createElement('i');m.dataset.step=i;m.hidden=true;s6.appendChild(m);}})();
   // s8 accuracy bars animate on enter
   enter.s8=function(){document.querySelectorAll('#s8 .hbar .tr i').forEach(i=>{i.style.width='0';setTimeout(()=>i.style.width=getComputedStyle(i).getPropertyValue('--w'),500);});};
 
   const h=parseInt(location.hash.slice(1));
   cur=(h>0&&h<=slides.length)?h-1:0;
   enter[slides[cur].id]&&enter[slides[cur].id]();
-  apply();
+  remote=PRESENTER;apply();remote=false;
+  if(PRESENTER&&bc)bc.postMessage({req:1});
 })();
 </script>
 </body>
