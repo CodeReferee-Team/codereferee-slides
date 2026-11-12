@@ -931,6 +931,7 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
     if(!w){const t=document.getElementById('popupMsg');t.querySelector('a').href=presenterUrl();t.classList.add('show');setTimeout(()=>t.classList.remove('show'),8000);}
   }
   addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey)return; // Cmd+P(인쇄), Cmd+F(찾기) 같은 브라우저 단축키는 건드리지 않는다
     if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}
     else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
