@@ -376,6 +376,18 @@ body.presenter #pv{display:block}
 #pvNotes .qi b{display:block;color:#fff;font-weight:700}
 #pvNotes .qi span{display:block;color:#cbd5e1;font-size:26px}
 #pvBtns button.on{background:#1d5fd1;border-color:#1d5fd1}
+/* 예상 질문 모드: 발표자 창 전체를 질문 목록으로 쓴다 */
+body.presenter.qa-mode #viewport,body.presenter.qa-mode #pvMeta,body.presenter.qa-mode #pvNext{display:none}
+body.presenter.qa-mode #pvSide{left:20px;right:20px;top:12px;height:auto;flex-direction:row;align-items:center;gap:16px}
+body.presenter.qa-mode #pvTimer{font-size:28px}
+body.presenter.qa-mode #pvBtns{margin-left:auto}
+body.presenter.qa-mode #pvBtns button{flex:none;padding:8px 16px}
+body.presenter.qa-mode #pvNotes{top:64px;font-size:19px;line-height:1.5;column-count:2;column-gap:36px;white-space:normal}
+body.presenter.qa-mode #pvNotes .qah{column-span:all;font-size:18px;margin-bottom:12px;color:#94a3b8}
+body.presenter.qa-mode #pvNotes .qi{break-inside:avoid;margin-bottom:18px;padding:14px 16px;border:1px solid #1e293b;border-radius:10px;background:#111830}
+body.presenter.qa-mode #pvNotes .qi b{font-size:20px;margin-bottom:6px}
+body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
+@media (max-width:900px){body.presenter.qa-mode #pvNotes{column-count:1}}
 @media print{html,body{overflow:visible;background:#fff}#viewport{position:static;display:block}#stage{transform:none!important}}
 </style>
 </head>
@@ -846,7 +858,7 @@ body.presenter #pv{display:block}
 </div></div>
 <div id="notes"><div class="t" id="notesTitle"></div><div id="notesBody"></div></div>
 <div id="help">← → 이동, F 전체화면, P 발표자 창, N 노트</div>
-<div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button><button id="pvQa">예상 질문</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
+<div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button><button id="pvQa">예상 질문 (Q)</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
 
 <script>
 (function(){
@@ -859,8 +871,9 @@ body.presenter #pv{display:block}
   const bc=('BroadcastChannel' in window)?new BroadcastChannel('codereferee-slides'):null;
   let remote=false;
   const vp=document.getElementById('viewport');
-  function fit(){const s=Math.min(vp.clientWidth/1920,vp.clientHeight/1080);stage.style.transform='scale('+s+')';}
+  function fit(){if(!vp.clientWidth||!vp.clientHeight)return;const s=Math.min(vp.clientWidth/1920,vp.clientHeight/1080);stage.style.transform='scale('+s+')';}
   addEventListener('resize',fit);fit();
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(vp);
 
   // title slide user dots
   (function(){const g=document.getElementById('userdots');let h='';let i=0;
@@ -896,7 +909,7 @@ body.presenter #pv{display:block}
   let qa=false;
   function showQa(){
     const box=document.getElementById('pvNotes');box.innerHTML='';
-    const h=document.createElement('span');h.className='qah';h.textContent='예상 질문';box.appendChild(h);
+    const h=document.createElement('span');h.className='qah';h.textContent='예상 질문  ·  '+(cur===slides.length-1?'← 누르면 마무리 대본으로':'Q 키나 버튼, → 를 누르면 대본으로')+'  ·  빔 화면은 그대로';box.appendChild(h);
     document.querySelectorAll('#qa .qi').forEach(q=>box.appendChild(q.cloneNode(true)));
     if(!document.querySelector('#qa .qi')){const e=document.createElement('span');e.textContent='script.md에 예상 질문이 없다';box.appendChild(e);}
     box.scrollTop=0;
@@ -904,7 +917,7 @@ body.presenter #pv{display:block}
     document.getElementById('pvNext').innerHTML='다음<b>'+(cur===slides.length-1?'← 누르면 마무리 대본':'버튼을 다시 누르면 대본')+'</b>';
   }
   function presenter(){
-    document.getElementById('pvQa').classList.toggle('on',qa);
+    document.getElementById('pvQa').classList.toggle('on',qa);document.body.classList.toggle('qa-mode',qa);fit();
     if(qa){showQa();return;}
     const s=slides[cur],raw=(s.querySelector('aside.notes')||{}).textContent||'';
     const plan=raw.match(/\((\d+:\d\d)~(\d+:\d\d)\)/);
@@ -940,6 +953,7 @@ body.presenter #pv{display:block}
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='n'||e.key==='N'){document.getElementById('notes').classList.toggle('show');}
+    else if((e.key==='q'||e.key==='Q')&&PRESENTER){qa=!qa;presenter();}
     else if((e.key==='p'||e.key==='P')&&!PRESENTER){window.open(location.pathname+'?presenter#'+(cur+1),'codereferee-presenter','width=1280,height=800');}
   });
   vp.addEventListener('click',e=>{if(e.target.closest('a'))return;const r=vp.getBoundingClientRect();(e.clientX-r.left>r.width*0.3)?next():prev();});
