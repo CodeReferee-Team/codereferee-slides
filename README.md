@@ -85,18 +85,20 @@ git push                      # 1분 뒤 발표 주소에 반영
 - `(3:05~3:35)`는 발표자 창 타이머 기준 시간이다
 - `index.html` 안의 `<aside class="notes">`는 `script.md`로 덮어써진다. 대본은 거기서 고치지 않는다
 
-슬라이드를 추가할 때:
+### index.html 고칠 때 꼭 지킬 세 가지
+
+**1. 슬라이드 하나는 이 틀을 따른다.** 대본 자리 `<aside class="notes">`는 비워 둔다. `script.md` 대본이 자동으로 들어간다.
 
 ```html
 <section class="slide" id="s17" data-title="새 슬라이드">
   ... 화면 내용 ...
-  <aside class="notes"></aside>   <!-- 비워 둔다. script.md 대본이 들어간다 -->
+  <aside class="notes"></aside>
 </section>
 ```
 
-- 슬라이드를 추가, 삭제하거나 순서를 바꾸면 `script.md`의 `## N. 제목`도 같은 개수와 순서로 맞춘다. 다르면 대본이 반영되지 않는다
-- 이미지는 `assets/`에 파일로 넣고 `assets/파일명`으로 쓴다. HTML 안에 통째로 넣지 않는다
-- 다른 HTML 파일로 `index.html`을 통째로 덮어쓰지 않는다. 바뀐 슬라이드만 옮긴다
+**2. 슬라이드를 추가, 삭제하거나 순서를 바꾸면 `script.md`도 같이 맞춘다.** `## N. 제목`의 개수와 순서가 슬라이드와 같아야 한다. 다르면 대본이 반영되지 않는다.
+
+**3. 이미지는 `assets/`에 파일로 넣고 `assets/파일명`으로 쓴다.** HTML 안에 통째로 넣지 않는다. 다른 HTML 파일로 `index.html`을 통째로 덮어쓰지 않고, 바뀐 슬라이드만 옮긴다.
 
 ## 파일 구조
 
