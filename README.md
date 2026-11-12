@@ -60,39 +60,54 @@ http://127.0.0.1:8765/ 을 열고 위와 똑같이 `P`를 누른다. 인터넷 �
 
 ## 발표 자료 고치는 법
 
+### 무엇을 어디서 고치나
+
+| 고칠 것 | 고칠 곳 |
+| --- | --- |
+| 슬라이드 화면 | `index.html` |
+| **대본** | **`index.html`의 해당 슬라이드 `<aside class="notes">`** (발표자 창은 여기서 읽는다) |
+| 예상 질문, 시간이 넘칠 때 줄이는 순서 | `script.md`의 부록 |
+
+`script.md`의 슬라이드별 대본은 `index.html`에서 **자동으로 만들어진다.** 직접 고쳐도 다음 동기화 때 덮어써진다.
+`main`에 올리면 GitHub Actions(`대본 동기화`)가 `script.md`를 맞춰 커밋한다.
+
 ### 규칙
 
 1. 고치기 전에 단톡에 **"○번 슬라이드 고칠게"** 한 줄 남긴다. 같은 슬라이드를 동시에 고치지 않는다
 2. 수치는 **출처가 확인된 것만** 넣는다
-3. 대본을 고치면 `script.md`도 같이 고친다
+3. 대본의 `[→]` 개수는 그 슬라이드의 화면 단계 수와 맞춘다. 틀리면 Actions 탭에 경고가 뜬다
 
 ### 방법 A: GitHub 웹에서
 
 1. 레포에서 `index.html`을 열고 연필 아이콘(✏️)을 누른다
 2. 고친 뒤 **Commit changes**를 누른다
-3. 1분쯤 뒤 발표 주소에서 새로고침해 확인한다
+3. 1분쯤 뒤 발표 주소에서 새로고침해 확인한다. `script.md`는 Actions가 알아서 맞춘다
 
 ### 방법 B: 내 컴퓨터에서
 
 ```bash
 git clone https://github.com/CodeReferee-Team/codereferee-slides.git
 cd codereferee-slides
-git pull          # 고치기 전에 항상 최신본 받기
-# index.html, script.md 수정
+git pull                       # 고치기 전에 항상 최신본 받기 (Actions 커밋 포함)
+# index.html 수정
+python tools/sync_script.py    # script.md 갱신, [→] 개수와 대본 길이 확인
 git add index.html script.md
 git commit -m "7번 슬라이드 문구 수정"
 git push
 ```
 
+`python tools/sync_script.py`를 빼먹어도 Actions가 맞춰 준다. 이때는 다음에 고치기 전에 `git pull`로 받아 온다.
 고친 화면은 위 "인터넷이 안 될 때"의 로컬 서버로 미리 확인할 수 있다.
 
 ## 파일 구조
 
 | 파일 | 내용 |
 | --- | --- |
-| `index.html` | 슬라이드 16장, 애니메이션, 발표자 기능 |
-| `script.md` | 대본 전체(읽기용), 시간이 넘칠 때 줄이는 순서, 예상 질문 |
+| `index.html` | 슬라이드 16장, 애니메이션, 발표자 기능, **대본 원본** |
+| `script.md` | 대본 전체(읽기용, 자동 생성), 시간이 넘칠 때 줄이는 순서, 예상 질문 |
 | `assets/` | 폰트, 기술 로고, 데모 캡처 |
+| `tools/sync_script.py` | `index.html` 대본으로 `script.md`를 만들고 단계 수와 길이를 검사 |
+| `.github/workflows/sync-script.yml` | `main`에 올라오면 위 스크립트를 실행해 커밋 |
 
 `index.html` 안에서:
 
