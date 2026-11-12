@@ -60,57 +60,50 @@ http://127.0.0.1:8765/ 을 열고 위와 똑같이 `P`를 누른다. 인터넷 �
 
 ## 발표 자료 고치는 법
 
-### 무엇을 어디서 고치나
-
-| 고칠 것 | 고칠 곳 |
+| 고칠 것 | 파일 |
 | --- | --- |
 | 슬라이드 화면 | `index.html` |
-| **대본** | **`index.html`의 해당 슬라이드 `<aside class="notes">`** (발표자 창은 여기서 읽는다) |
-| 예상 질문, 시간이 넘칠 때 줄이는 순서 | `script.md`의 부록 |
+| 대본, 예상 질문 | `script.md` |
 
-`script.md`의 슬라이드별 대본은 `index.html`에서 **자동으로 만들어진다.** 직접 고쳐도 다음 동기화 때 덮어써진다.
-`main`에 올리면 GitHub Actions(`대본 동기화`)가 `script.md`를 맞춰 커밋한다.
-
-### 규칙
-
-1. 고치기 전에 단톡에 **"○번 슬라이드 고칠게"** 한 줄 남긴다. 같은 슬라이드를 동시에 고치지 않는다
-2. 수치는 **출처가 확인된 것만** 넣는다
-3. 대본의 `[→]` 개수는 그 슬라이드의 화면 단계 수와 맞춘다. 틀리면 Actions 탭에 경고가 뜬다
-
-### 방법 A: GitHub 웹에서
-
-1. 레포에서 `index.html`을 열고 연필 아이콘(✏️)을 누른다
-2. 고친 뒤 **Commit changes**를 누른다
-3. 1분쯤 뒤 발표 주소에서 새로고침해 확인한다. `script.md`는 Actions가 알아서 맞춘다
-
-### 방법 B: 내 컴퓨터에서
+`script.md`의 대본은 발표자 창에 자동으로 들어간다.
+고치기 전에 단톡에 **"○번 슬라이드 고칠게"** 남기고, 수치는 출처가 확인된 것만 넣는다.
 
 ```bash
-git clone https://github.com/CodeReferee-Team/codereferee-slides.git
-cd codereferee-slides
-git pull                       # 고치기 전에 항상 최신본 받기 (Actions 커밋 포함)
-# index.html 수정
-python tools/sync_script.py    # script.md 갱신, [→] 개수와 대본 길이 확인
-git add index.html script.md
-git commit -m "7번 슬라이드 문구 수정"
-git push
+git pull
+# index.html 또는 script.md 수정
+python tools/sync_script.py   # 대본을 발표자 노트에 반영 + [→] 개수·대본 길이 확인
+git commit -am "7번 슬라이드 대본 수정"
+git push                      # 1분 뒤 발표 주소에 반영
 ```
 
-`python tools/sync_script.py`를 빼먹어도 Actions가 맞춰 준다. 이때는 다음에 고치기 전에 `git pull`로 받아 온다.
-고친 화면은 위 "인터넷이 안 될 때"의 로컬 서버로 미리 확인할 수 있다.
+`python tools/sync_script.py`를 빼먹어도 push 후 GitHub Actions가 반영해 커밋한다. 다음에 고치기 전에 `git pull`로 받아 온다.
+
+대본 쓰는 법:
+
+- `## 7. 검증 워크플로우`처럼 제목 번호는 슬라이드 순서와 같다
+- `[→]`는 → 키를 누를 자리다. 넘기는 단계를 바꿀 때만 개수를 맞추면 된다
+- `(3:05~3:35)`는 발표자 창 타이머 기준 시간이다
+- `index.html` 안의 `<aside class="notes">`는 `script.md`로 덮어써진다. 대본은 거기서 고치지 않는다
+
+슬라이드를 추가할 때:
+
+```html
+<section class="slide" id="s17" data-title="새 슬라이드">
+  ... 화면 내용 ...
+  <aside class="notes"></aside>   <!-- 비워 둔다. script.md 대본이 들어간다 -->
+</section>
+```
+
+- 슬라이드를 추가, 삭제하거나 순서를 바꾸면 `script.md`의 `## N. 제목`도 같은 개수와 순서로 맞춘다. 다르면 대본이 반영되지 않는다
+- 이미지는 `assets/`에 파일로 넣고 `assets/파일명`으로 쓴다. HTML 안에 통째로 넣지 않는다
+- 다른 HTML 파일로 `index.html`을 통째로 덮어쓰지 않는다. 바뀐 슬라이드만 옮긴다
 
 ## 파일 구조
 
 | 파일 | 내용 |
 | --- | --- |
-| `index.html` | 슬라이드 16장, 애니메이션, 발표자 기능, **대본 원본** |
-| `script.md` | 대본 전체(읽기용, 자동 생성), 시간이 넘칠 때 줄이는 순서, 예상 질문 |
+| `index.html` | 슬라이드 16장, 애니메이션, 발표자 기능 |
+| `script.md` | 대본, 시간이 넘칠 때 줄이는 순서, 예상 질문 |
 | `assets/` | 폰트, 기술 로고, 데모 캡처 |
-| `tools/sync_script.py` | `index.html` 대본으로 `script.md`를 만들고 단계 수와 길이를 검사 |
-| `.github/workflows/sync-script.yml` | `main`에 올라오면 위 스크립트를 실행해 커밋 |
-
-`index.html` 안에서:
-
-- 각 장은 `<section class="slide">`이고, 대본은 그 안의 `<aside class="notes">`에 있다
-- 대본의 `[→]` 개수는 그 슬라이드의 단계(`data-step`) 수와 같아야 발표자 창의 강조가 맞는다
-- `(1:00~1:45)` 같은 시간 표기는 발표자 창 타이머의 기준이다
+| `tools/sync_script.py` | `script.md` 대본을 `index.html` 발표자 노트에 넣고 검사 |
+| `.github/workflows/sync-script.yml` | push 때 위 스크립트를 실행해 커밋 |
