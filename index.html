@@ -352,6 +352,9 @@ h1.t em{font-style:normal;color:var(--blue)}
 /* notes */
 #notes{position:fixed;left:0;right:0;bottom:0;max-height:34vh;overflow:auto;background:#0f172aee;color:#e2e8f0;font-size:17px;line-height:1.6;padding:16px 28px;display:none;z-index:20;border-top:2px solid var(--blue)}
 #notes.show{display:block}
+#popupMsg{position:fixed;left:50%;top:20px;transform:translateX(-50%);z-index:30;background:#0f172a;color:#e2e8f0;border:1px solid #1d5fd1;border-radius:10px;padding:12px 18px;font-size:16px;display:none}
+#popupMsg.show{display:block}
+#popupMsg a{color:#93c5fd;font-weight:700}
 #notesBody{white-space:pre-line}
 #notes .t{color:#93c5fd;font-weight:700;margin-bottom:4px}
 aside.notes{display:none}
@@ -828,6 +831,7 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
 <div id="progress"></div>
 </div></div>
 <div id="notes"><div class="t" id="notesTitle"></div><div id="notesBody"></div></div>
+<div id="popupMsg">브라우저가 새 창을 막았습니다. <a href="#" target="codereferee-presenter">여기를 눌러 발표자 창 열기</a></div>
 <div id="help">← → 이동, F 전체화면, P 발표자 창, N 노트</div>
 <div id="pv"><div id="pvSide"><div id="pvTimer">00:00</div><div id="pvMeta"></div><div id="pvBtns"><button id="pvPrev">◀ 이전</button><button id="pvNextBtn">다음 ▶</button><button id="pvReset">타이머 0</button><button id="pvQa">예상 질문 (Q)</button></div><div id="pvNext"></div></div><div id="pvNotes"></div></div>
 
@@ -918,14 +922,23 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
   function next(){const m=maxStep(slides[cur]);if(PRESENTER&&cur===slides.length-1&&step>=m){if(!qa){qa=true;presenter();}return;}qa=false;if(step<m){step++;apply();}else if(cur<slides.length-1)go(cur+1);}
   function prev(){if(PRESENTER&&qa){qa=false;presenter();return;}if(step>0){step--;apply();}else if(cur>0){go(cur-1,maxStep(slides[cur-1]));}}
 
+  function toggleFull(){const d=document,el=d.documentElement;
+    if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d);}
+    else{(el.requestFullscreen||el.webkitRequestFullscreen).call(el);}}
+  function presenterUrl(){return location.pathname+'?presenter#'+(cur+1);}
+  function openPresenter(){
+    const w=window.open(presenterUrl(),'codereferee-presenter','width=1280,height=800');
+    if(!w){const t=document.getElementById('popupMsg');t.querySelector('a').href=presenterUrl();t.classList.add('show');setTimeout(()=>t.classList.remove('show'),8000);}
+  }
   addEventListener('keydown',e=>{
     if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}
     else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
-    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
-    else if(e.key==='n'||e.key==='N'){document.getElementById('notes').classList.toggle('show');}
-    else if((e.key==='q'||e.key==='Q')&&PRESENTER){qa=!qa;presenter();}
-    else if((e.key==='p'||e.key==='P')&&!PRESENTER){window.open(location.pathname+'?presenter#'+(cur+1),'codereferee-presenter','width=1280,height=800');}
+    // 글자 대신 키 위치(e.code)로 본다. 한글 입력 상태에서는 P가 'ㅔ'로 들어오기 때문이다
+    else if(e.code==='KeyF'){toggleFull();}
+    else if(e.code==='KeyN'){document.getElementById('notes').classList.toggle('show');}
+    else if(e.code==='KeyQ'&&PRESENTER){qa=!qa;presenter();}
+    else if(e.code==='KeyP'&&!PRESENTER){openPresenter();}
   });
   vp.addEventListener('click',e=>{if(e.target.closest('a'))return;const r=vp.getBoundingClientRect();(e.clientX-r.left>r.width*0.3)?next():prev();});
   let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
