@@ -112,10 +112,7 @@ h1.t em{font-style:normal;color:var(--blue)}
 .resultchips .rr:first-child{border-top:1px solid var(--line)}
 .resultchips .rr b{font-size:24px;font-weight:900;min-width:110px;display:inline-flex;align-items:center;gap:10px}
 .resultchips .rr b:before{content:"";width:12px;height:12px;border-radius:3px;background:currentColor}
-.svc{display:grid;grid-template-columns:1.3fr .9fr 1.25fr;gap:32px;margin-top:36px}
-.svcx{margin-top:20px;display:flex;gap:14px;align-items:center;font-size:23px;color:var(--ink2)}
-.svcx b{color:var(--ink);font-weight:800}
-.svcx i{font-style:normal;color:var(--ink3)}
+.svc{display:grid;grid-template-columns:1.3fr .9fr 1.25fr;gap:32px;margin-top:56px}
 .svc h4{font-size:26px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .svc ul{list-style:none;font-size:23px;line-height:1.5;color:var(--ink2)}
 .svc li{padding:8px 0;border-bottom:1px dashed var(--line)}
@@ -489,12 +486,11 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
       <p class="oos2">설치, 테스트, 기동은 장애를 걸기 위한 준비 단계, 즉 CI 단계입니다. 여기서 막히면 결과는 <b style="white-space:nowrap">판정 불가</b> 상태로 판단합니다.</p>
     </div>
     <div class="card diff" data-step="3">
-      <div><b>1</b><p><strong>실제로 실행하고 장애 주입</strong><span>쿠버네티스 샌드박스에 배포하고 LitmusChaos로 주입합니다.</span></p></div>
+      <div><b>1</b><p><strong>실제로 실행하고 장애 주입</strong><span>쿠버네티스 샌드박스에 배포하고 LitmusChaos로 주입합니다. 멀티 서비스·멀티 레포 프로젝트도 함께 띄우고, 브라우저로 실제 기능까지 확인합니다.</span></p></div>
       <div><b>2</b><p><strong>정해진 규칙으로 판정</strong><span>LLM은 원인 설명과 패치에만 관여합니다.</span></p></div>
       <div><b>3</b><p><strong>고칠 방법까지 검증합니다.</strong><span>실패하면 패치를 만들어 같은 장애로 다시 돌려 확인합니다.</span></p></div>
     </div>
   </div>
-  <div class="svcx" data-step="1"><b>멀티 서비스·멀티 레포</b> 프로젝트 검사 지원 <i>·</i> <b>브라우저</b>로 실제 기능 동작 확인</div>
   <aside class="notes">(1:00~1:45) 주소를 넣으면 결과는 통과, 실패, 판정 불가, 이 세 가지 중 하나로 나옵니다.
 [→] 실제로 거는 장애는 다섯 가지입니다. 서버 강제 종료, 메모리 초과, DB 연결 끊김, 네트워크 지연, 그리고 동시 사용자 200명까지 늘리는 부하입니다. 웹 화면, API 서버, 데이터베이스처럼 멀티 서비스나 멀티 레포로 구성된 프로젝트도 검사할 수 있습니다. 또 장애 실험 전후에 실제 브라우저로 화면을 직접 조작해서, 주요 기능이 제대로 동작하는지도 확인합니다.
 [→] 코드 버그는 따로 보지 않습니다. 그건 CI가 이미 하는 일이기 때문입니다. 그래서 빌드가 안 되는 경우는 실패가 아니라 판정 불가로 처리합니다.
@@ -815,7 +811,7 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
   <h1 class="t rise d1">향후 계획</h1>
   <div class="next3" style="grid-template-columns:repeat(2,1fr)">
     <div class="card rise d2"><b>01</b><strong>샌드박스 업사이징, 자동 기동</strong><span>샌드박스 CPU가 모자라면 부하 결과를 <em>판정 불가</em>로 처리하고 있습니다. 코어를 늘리고, 요청이 올 때만 서버를 켜고 끄며, 여러 요청을 나눠 배정하는 방향으로 검토 중입니다.</span><div class="up"><i>2 cores</i><s></s><i class="on">4+ cores</i></div></div>
-    <div class="card rise d3"><b>02</b><strong>동적 타임아웃</strong><span>단계별 시간 제한과 연장 재시도는 구축하였습니다. 다음은 실측을 쌓아 레포 크기와 빌드 이력으로 걸릴 시간을 미리 예측하는 것을 목표로 하고 있습니다.</span><div class="tbar"><i></i></div></div>
+    <div class="card rise d3"><b>02</b><strong>동적 타임아웃</strong><span>단계별 시간 제한과 연장 재시도는 구현했습니다. 다음은 실측을 쌓아 레포 크기와 빌드 이력으로 걸릴 시간을 미리 예측하는 것을 목표로 하고 있습니다.</span><div class="tbar"><i></i></div></div>
   </div>
   <aside class="notes">(7:45~8:20) 시간이 모자라면 이 장은 넘어갑니다.
 앞으로 계획은 두 가지입니다. 첫째, 샌드박스 CPU를 늘리고 요청이 있을 때만 서버를 켜서 비용을 줄이는 것. 둘째, 레포 크기에 맞춰 검사 시간을 미리 예측하는 것입니다.</aside>
