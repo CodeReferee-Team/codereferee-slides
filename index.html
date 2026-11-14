@@ -948,18 +948,19 @@ body.presenter.qa-mode #pvNotes .qi span{font-size:18px}
   const timers={};
   const enter={
     s4(){drawLoop();},
-    s2(){clearInterval(timers.s2);const seq=[[10,30,0],[50,45,0],[100,120,0],[200,2566,6]];let k=0;
-      const U=document.getElementById('mu'),R=document.getElementById('mr'),F=document.getElementById('mf');
-      const set=([u,r,f])=>{U.style.width=(u/200*100)+'%';U.style.background='var(--blue)';document.getElementById('mut').textContent=u+'명';
-        R.style.width=Math.min(100,r/2566*100)+'%';R.style.background=r>1000?'var(--fail)':r>100?'var(--warn)':'var(--pass)';document.getElementById('mrt').textContent=r.toLocaleString()+'ms';
-        F.style.width=(f?70:0)+'%';F.style.background='var(--fail)';document.getElementById('mft').textContent=f?'시간 초과':'0';};
-      set([0,0,0]);setTimeout(()=>{set(seq[0]);timers.s2=setInterval(()=>{k=(k+1)%seq.length;set(seq[k]);},1300);},900);},
     s10(){document.querySelectorAll('#s10 .count').forEach(el=>{const to=+el.dataset.to,dec=+(el.dataset.dec||0);const t0=performance.now();
       (function f(t){const p=Math.min(1,(t-t0)/1400);const v=to*(1-Math.pow(1-p,3));el.textContent=v.toFixed(dec);if(p<1)requestAnimationFrame(f);})(t0);});},
     s11(){const l=document.getElementById('pcline');const L=l.getTotalLength();l.style.transition='none';l.style.strokeDasharray=L;l.style.strokeDashoffset=L;
       l.getBoundingClientRect();l.style.transition='stroke-dashoffset 1.8s ease .5s';l.style.strokeDashoffset=0;}
   };
   const hooks={
+    s2(st){const seq=[[10,30,0],[50,45,0],[100,120,0],[200,2566,6]],U=document.getElementById('mu'),R=document.getElementById('mr'),F=document.getElementById('mf');
+      const set=([u,r,f])=>{U.style.width=(u/200*100)+'%';U.style.background='var(--blue)';document.getElementById('mut').textContent=u+'명';
+        R.style.width=Math.min(100,r/2566*100)+'%';R.style.background=r>1000?'var(--fail)':r>100?'var(--warn)':'var(--pass)';document.getElementById('mrt').textContent=r.toLocaleString()+'ms';
+        F.style.width=(f?70:0)+'%';F.style.background='var(--fail)';document.getElementById('mft').textContent=f?'시간 초과':'0';};
+      if(st<1){clearInterval(timers.s2);timers.s2Step=0;set(seq[0]);return;}
+      if(timers.s2Step)return;timers.s2Step=1;let k=1;set(seq[k]);
+      timers.s2=setInterval(()=>{if(++k<seq.length)set(seq[k]);else clearInterval(timers.s2);},1300);},
     s7(st){document.getElementById('bfill').style.width=st>=1?'12%':'0';},
     s8(st){},
     s10(st){document.querySelectorAll('#s10 .sbar .tr i').forEach(i=>i.style.width=st>=1?getComputedStyle(i).getPropertyValue('--w'):'0');},
